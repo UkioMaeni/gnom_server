@@ -63,33 +63,33 @@ class GuestController {
           res.status(500).send(error);
         }
       }
-      request:ControllerFunction=async(req, res) => {
-        try {
-          const token = req.headers.authorization;
+      // request:ControllerFunction=async(req, res) => {
+      //   try {
+      //     const token = req.headers.authorization;
           
-          console.log(token);
+      //     console.log(token);
           
-          if(!token){
-           return res.status(401).send("no auth");
-          }
-          const {text,type,lang} = req.body as {text:string|undefined,type:string,lang:string};
-          const file = req.file;
-          if(type=="math"){
-           await SubjectService.math(file,text,lang)
-          }
-          const info=await GusetService.requestsInfo(token);
-          console.log(info);
+      //     if(!token){
+      //      return res.status(401).send("no auth");
+      //     }
+      //     const {text,type,lang} = req.body as {text:string|undefined,type:string,lang:string};
+      //     const file = req.file;
+      //     if(type=="math"){
+      //      await SubjectService.math(file,text,lang)
+      //     }
+      //     const info=await GusetService.requestsInfo(token);
+      //     console.log(info);
           
-          res.send(info);
-        } catch (error) { 
-          console.log(error);
-          if(error instanceof GuestControllerError){
-            res.status(error.statusCode).send(null);
-            return;
-          }
-          res.status(500).send(error);
-        }
-      }
+      //     res.send(info);
+      //   } catch (error) { 
+      //     console.log(error);
+      //     if(error instanceof GuestControllerError){
+      //       res.status(error.statusCode).send(null);
+      //       return;
+      //     }
+      //     res.status(500).send(error);
+      //   }
+      // }
       
 
       

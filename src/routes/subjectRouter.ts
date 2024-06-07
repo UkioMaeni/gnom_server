@@ -5,7 +5,6 @@ import SubjectController from "../controllers/subjectController";
 
 const storage = multer.memoryStorage();
 const uploadMiddleWare = multer({ storage });
-subjectRouter.post("/subject/math",uploadMiddleWare.single("photo"),SubjectController.math);
-
+subjectRouter.post("/subject",uploadMiddleWare.single("file"),SubjectController.request);
 
 export default subjectRouter;

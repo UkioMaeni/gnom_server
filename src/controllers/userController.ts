@@ -139,6 +139,37 @@ class UserController {
           res.status(500).send(error);
         }
       }
+      find:ControllerFunction=async(req, res) => {
+        try {
+          const token = req.headers.authorization;
+          console.log(token);
+          
+          if(!token){
+           return res.status(401).send("no token");
+          }
+          const {login}=req.query
+          console.log(login);
+          if(!login){
+            return res.status(400).send("no login");
+           }
+          
+          
+           jwt.accessVerify(token);
+          const userDto= await UserService.find(login as string);
+          console.log(userDto);
+          if(!userDto){
+            return res.send("empty");
+          }
+          return res.send(userDto);
+        } catch (error) { 
+          console.log(error);
+          if(error instanceof GuestControllerError){
+            res.status(error.statusCode).send(null);
+            return;
+          }
+          res.status(500).send(error);
+        }
+      }
       
 }
 

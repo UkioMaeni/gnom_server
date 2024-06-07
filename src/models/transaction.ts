@@ -4,12 +4,14 @@ import { DataTypes, Model } from 'sequelize';
 export enum TransactionRow{
     id="id",
     uuid="uuid",
-    status="status",
+    user_id="user_id",
+    guest_id="guest_id",
 }
 class Transaction extends Model{
     declare id:number;
     declare uuid:string;
-    declare status:string;
+    declare user_id:number|null;
+    declare guest_id:string|null;
 }
 Transaction.init(
     {   
@@ -23,10 +25,15 @@ Transaction.init(
             unique:true,
             allowNull: false,
         },
-        status: {
+        user_id: {
+            type: DataTypes.INTEGER,
+            unique:false,
+            allowNull: true,
+        },
+        guest_id: {
             type: DataTypes.STRING,
             unique:false,
-            allowNull: false,
+            allowNull: true,
         },
         
     },

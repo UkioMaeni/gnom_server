@@ -1,44 +1,128 @@
 import { Request, Response } from 'express';
 import FormData from 'form-data';
-import fastAPI from "../service/generationLibraryAPI/http"
+import subjectService from "../service/subjectService/subjecrService"
 import fs from 'fs';
 import { Readable, Stream } from 'stream';
 import path from 'path';
-
+import firebaseService from "../firebase/firebase"
+import GuestTokens,{GuestTokensRow} from "../models/guest_tokens"
+import UserTokens,{UserTokensRow} from "../models/user_tokens"
+import User,{UserRow} from '../models/user';
+import Transaction, { TransactionRow } from '../models/transaction';
+import Guest from '../models/guest';
+import { randomUUID } from 'crypto';
+import jwt from '../service/JWT/jwt';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class SubjectController {
 
 
-  math:ControllerFunction=async(req, res) => {
+  request:ControllerFunction=async(req, res) => {
         try {
           console.log(req.body);
-          console.log(req.file);
           const file=req.file;
-          const deviceId=req.body.deviceId as string;
-          if(!file || !deviceId){
-            return res.status(500).send("error");
+          const {authorization}=req.headers;
+          console.log(authorization);
+          if(!authorization){
+            return res.status(401).send("неавтор");
            }
-           const formdata=new FormData()
-            const newFilePath = path.join(__dirname,`../tempFiles/${Date.now()}.png`);
-            fs.writeFileSync(newFilePath, file.buffer)
-            //console.log(await fs.readFile(newFilePath));
+           
+          const {type,text}=req.body as {type:string,text:string|undefined};
+          if(!type){
+            return res.status(400).send("нет типа");
+           }
+           const tokenRepo=await jwt.getPayloadInAccess(authorization)
+           console.log(tokenRepo);
+           
+           if(!tokenRepo){
+            return res.status(401).send("неавтор");
+           }
+           const user =await User.findOne({
+            where:{
+              [UserRow.login]:tokenRepo.sub,
+            }
+           })
+           console.log(user);
+           if(!user){
+              return res.status(401).send("неавтор");
+           }
             
-           formdata.append("file",fs.createReadStream(newFilePath));
-           formdata.append("type","self");
-           const result= await  fastAPI.sendMathSolutuin(formdata)
-           if(result==0){
-            fs.unlink(newFilePath,()=>{});
+           let result:number|string=0;
+           const uuid= randomUUID();
+           switch(type){
+              case "parafrase":
+                result=await  subjectService.paraphrasingText(file,text,"ru")
+                if(result){
+                  return res.send({code:0,result:result});
+                }
+              break;
+              case "math":
+                await this.createTransaction(uuid,"math",user);
+                result=await subjectService.math(file,text,"ru",uuid)
+                if(result==0){
+                  return res.send({code:0,result:""});
+                }
+              break;
+              case "referat":
+                await this.createTransaction(uuid,"referat",user);
+                result = await subjectService.referat(file,text,"ru",uuid) as number
+                if(result==0){
+                  return res.send({code:0,result:""});
+                }
+              break;
+              case "essay":
+                await this.createTransaction(uuid,"essay",user);
+                result = await subjectService.essay(file,text,"ru",uuid) as string
+                if(result){
+                  return res.send({code:0,result:result});
+                }
+              break;
+              case "presentation":
+                await this.createTransaction(uuid,"presentation",user);
+                result = await subjectService.presentation(file,text,"ru",uuid)
+                if(result){
+                  return res.send({code:0,result:""});
+                }
+              break;
+              case "reduce":
+                result = await subjectService.reduce(file,text,"ru") as string
+                if(result){
+                  return res.send({code:0,result:result});
+                }
+              break;
+              case "sovet":
+                result = await subjectService.sovet(file,text,"ru")
+                if(result){
+                  return res.send({code:0,result:result});
+                }
+              break;
            }
-          res.send("tokens");
+           res.status(400).send({code:0,result:"error request"});
+          //  const formdata=new FormData()
+          //   const newFilePath = path.join(__dirname,`../tempFiles/${Date.now()}.png`);
+          //   fs.writeFileSync(newFilePath, file.buffer)
+          //   //console.log(await fs.readFile(newFilePath));
+            
+          //  formdata.append("file",fs.createReadStream(newFilePath));
+          //  formdata.append("type","self");
+          //  const result= await  fastAPI.sendMathSolutuin(formdata)
+          //  if(result==0){
+          //   fs.unlink(newFilePath,()=>{});
+          //  }
+          
         } catch (error) { 
           console.log(error);
           
           res.status(500).send(error);
         }
       }
-      
-
+      private async createTransaction(transactionId:string,subject:string,auth:User|Guest){
+        await Transaction.create({
+            [TransactionRow.uuid]:transactionId+"."+subject,
+            [TransactionRow.user_id]:(auth instanceof User)?auth.id:null,
+            [TransactionRow.guest_id]:(auth instanceof Guest)?auth.id:null,
+        })
+    }
       
 }
 

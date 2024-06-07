@@ -1,25 +1,183 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import instance from "../../tools/axios/instance"
-import FormData from 'form-data';
-
 class FastAPIService{
     sendMathSolutuin=async(formData:FormData):Promise<number>=>{
         try {
-            console.log("send");
-            
-          const response=await instance.post(
-                "/math_solution",
-                formData
-            );
-            console.log(response.data);
-            if(response.data!=null){
-                return 0;
-            }
-            return -1;
+            console.log(formData);
+           
+      
+            const response=await fetch('http://45.12.237.135/math_solution', {
+                method: 'POST',
+                headers: {
+                },
+                body: formData,
+              })
+              if(!response.ok){
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+              }
+              const data = await response.json();
+              console.log(data);
+              
+            return 0;
         } catch (error) {
+            console.log(error);
+            return -1;
+        }
+    }
+    sendParafraseText=async(formData:FormData):Promise<string>=>{
+        try {
+            console.log(formData);
+            const response=await fetch('http://45.12.237.135/paraphrasing_text', {
+                method: 'POST',
+                headers: {
+                },
+                body: formData,
+              })
+              if(!response.ok){
+                throw response;
+              }
+              const data = await response.json();
+              console.log(data);
+            return data['paraphrased_text'];
+        } catch (error) {
+            if(error instanceof Response){
+                const er=await error.json()
+                console.log(er["detail"]);
+                
+            }
+            return "";
+        }
+    }
+    sendReferat=async(formData:FormData):Promise<number>=>{
+        try {
+            console.log("send");
+            const response=await fetch('http://45.12.237.135/abstract_generation', {
+                method: 'POST',
+                headers: {
+                },
+                body: formData,
+              })
+              if(!response.ok){
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+              }
+              const data = await response.json();
+              console.log(data);
+          
+            return 0;
+        } catch (error) {
+            console.log("error");
             console.log(error);
             
             return -1;
+        }
+    }
+    sendEssay=async(formData:FormData):Promise<string>=>{
+        try {
+            console.log("send");
+            const response=await fetch('http://45.12.237.135/composition_generation', {
+                method: 'POST',
+                headers: {
+                },
+                body: formData,
+              })
+              if(!response.ok){
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+              }
+              const data = await response.json();
+              console.log(data);
+              if(data["composition"]){
+                return data["composition"];
+              }
+            return "";
+        } catch (error) {
+            console.log("error");
+            console.log(error);
+            
+            return "";
+        }
+    }
+    sendPresentation=async(formData:any):Promise<number>=>{
+        try {
+            console.log(formData);
+            const response=await fetch('http://45.12.237.135/presentation_generation', {
+                method: 'POST',
+                headers: {
+                },
+                body: formData,
+              })
+              if(!response.ok){
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+              }
+              const data = await response.json();
+              console.log(data);
+          
+            return 0;
+        } catch (error) {
+            if(error instanceof AxiosError){
+                console.log(error.response?.status);
+                console.log(error.response?.statusText);
+            }
+            
+            return -1;
+        }
+    }
+    sendReduce=async(formData:FormData):Promise<string>=>{
+        try {
+            console.log("send");
+            const response=await fetch('http://45.12.237.135/abbreviation_of_text', {
+                method: 'POST',
+                headers: {
+                },
+                body: formData,
+              })
+              if(!response.ok){
+                throw  response;
+              }
+              const data = await response.json();
+              console.log(data);
+              if(data["short_text"]){
+                return data["short_text"];
+              }
+            return "";
+        } catch (error) {
+            if(error instanceof Response){
+                const er=await error.json()
+                console.log(er["detail"][0]["loc"]);
+                
+            }
+            console.log("error");
+            console.log(error);
+            
+            return "";
+        }
+    }
+    sendSovet=async(formData:FormData):Promise<string>=>{
+        try {
+            console.log("send");
+            const response=await fetch('http://45.12.237.135/advice_generation', {
+                method: 'POST',
+                headers: {
+                },
+                body: formData,
+              })
+              if(!response.ok){
+                throw response;
+              }
+              const data = await response.json();
+              console.log(data);
+              if(data["advice"]){
+                return data["advice"];
+              }
+            return "";
+        } catch (error) {
+            if(error instanceof Response){
+                const er=await error.json()
+                console.log(er["detail"][0]["loc"]);
+                
+            }
+          
+            
+            return "";
         }
     }
 }

@@ -10,7 +10,7 @@ export enum UserTokensRow{
 }
 class UserTokens extends Model{
     declare id:number;
-    declare userId:string;
+    declare userId:number;
     declare token:string;
 }
 UserTokens.init(

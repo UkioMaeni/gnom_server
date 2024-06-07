@@ -4,7 +4,7 @@ import UserTokenRepo from "../repositoryes/userTokenRepo";
 import AppError, { EGuestControllerErrorType, GuestControllerError } from "./customError/customError";
 import jwtTool from "./JWT/jwt";
 import UserRequests from "../models/userRequests";
-import User from "../models/user";
+import User, { UserRow } from "../models/user";
 import {UserDTO} from "../dto/userDto"
 class UserService{
     userRepo=UserRepo;
@@ -80,6 +80,22 @@ class UserService{
               throw new GuestControllerError("invalid token",EGuestControllerErrorType.invalidToken,400);
             }
             return {id:user.id,login:user.login,nickname:user.nickname}
+      } catch (error) {
+          console.log(error);
+          throw error;
+      }
+    }
+    async find(login:string ):Promise<UserDTO|null>{
+      try {
+            const user=await User.findOne({
+              where:{
+                [UserRow.login]:login
+              }
+            })
+            if(user){
+              return {id:user.id,login:user.login,nickname:user.nickname}
+            }
+            return null
       } catch (error) {
           console.log(error);
           throw error;
