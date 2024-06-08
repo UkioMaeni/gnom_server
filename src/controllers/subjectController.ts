@@ -58,21 +58,21 @@ class SubjectController {
               break;
               case "math":
                 await this.createTransaction(uuid,"math",user);
-                result=await subjectService.math(file,text,"ru",uuid)
+                result=await subjectService.math(file,text,"ru",uuid+".math")
                 if(result==0){
                   return res.send({code:0,result:""});
                 }
               break;
               case "referat":
                 await this.createTransaction(uuid,"referat",user);
-                result = await subjectService.referat(file,text,"ru",uuid) as number
+                result = await subjectService.referat(file,text,"ru",uuid+".referat") as number
                 if(result==0){
                   return res.send({code:0,result:""});
                 }
               break;
               case "essay":
                 await this.createTransaction(uuid,"essay",user);
-                result = await subjectService.essay(file,text,"ru",uuid) as string
+                result = await subjectService.essay(file,text,"ru",uuid+".essay") as string
                 if(result){
                   return res.send({code:0,result:result});
                 }
