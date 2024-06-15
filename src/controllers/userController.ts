@@ -220,6 +220,11 @@ class UserController {
             }else{
               return res.status(401).send("неавтор");
             }
+            await UnreadMessages.destroy({
+              where:{
+                [UnreadMessagesRow.guest_id]:user.id
+              }
+            })
             return res.send(messages);
         
           
