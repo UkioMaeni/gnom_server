@@ -24,22 +24,18 @@ UnreadMessages.init(
         },
         text: {
             type: DataTypes.STRING,
-            unique:true,
             allowNull: false,
         },
         subject_type: {
             type: DataTypes.STRING,
-            unique:true,
             allowNull: false,
         },
         user_id: {
             type: DataTypes.INTEGER,
-            unique:true,
             allowNull: true,
         },
         guest_id: {
             type: DataTypes.STRING,
-            unique:true,
             allowNull: true,
         },
         
