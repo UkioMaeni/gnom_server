@@ -203,6 +203,11 @@ class UserController {
                   [UnreadMessagesRow.user_id]:user.id
                 }
               })
+              await UnreadMessages.destroy({
+                where:{
+                  [UnreadMessagesRow.user_id]:user.id
+                }
+              })
             }else if(tokenRepo["type"]=="guest"){
               user =await Guest.findOne({
                 where:{
@@ -217,14 +222,15 @@ class UserController {
                   [UnreadMessagesRow.guest_id]:user.id
                 }
               })
+              await UnreadMessages.destroy({
+                where:{
+                  [UnreadMessagesRow.guest_id]:user.id
+                }
+              })
             }else{
               return res.status(401).send("неавтор");
             }
-            await UnreadMessages.destroy({
-              where:{
-                [UnreadMessagesRow.guest_id]:user.id
-              }
-            })
+            
             return res.send(messages);
         
           
