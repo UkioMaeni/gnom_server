@@ -13,8 +13,8 @@ class UserService{
     async authUser(email:string ):Promise<{ accessToken: string; refreshToken: string; }>{
         try {
             const user= await this.userRepo.createUser(email);
-            const accessToken= jwtTool.generateAccessToken(user.login);
-            const refreshToken= jwtTool.generateRefreshToken(user.login);
+            const accessToken= jwtTool.generateAccessToken(user.login,"user");
+            const refreshToken= jwtTool.generateRefreshToken(user.login,"user");
             const result=await this.userTokenRepo.saveToken(refreshToken,user.id);
             //await this.guestRequestsRepo.updateRequests(guest.id)
             return {accessToken,refreshToken}
@@ -56,8 +56,8 @@ class UserService{
             if(!isAuth){
               throw new GuestControllerError("invalid token",EGuestControllerErrorType.invalidToken,401);
             }
-          const accessToken= jwtTool.generateAccessToken(login);
-          const refreshToken= jwtTool.generateRefreshToken(login);
+          const accessToken= jwtTool.generateAccessToken(login,"user");
+          const refreshToken= jwtTool.generateRefreshToken(login,"user");
           const result=await this.userTokenRepo.updateToken(refreshToken,user.id);
           return {accessToken,refreshToken}
       } catch (error) {

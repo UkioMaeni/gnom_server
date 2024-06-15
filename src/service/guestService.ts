@@ -11,8 +11,8 @@ class GuestService{
     async authGuest(deviceId:string ):Promise<{ accessToken: string; refreshToken: string; }>{
         try {
             const guest= await this.guestRepo.createGuest(deviceId);
-            const accessToken= jwtTool.generateAccessToken(deviceId);
-            const refreshToken= jwtTool.generateRefreshToken(deviceId);
+            const accessToken= jwtTool.generateAccessToken(deviceId,"guest");
+            const refreshToken= jwtTool.generateRefreshToken(deviceId,"guest");
             const result=await this.guestTokenRepo.saveToken(refreshToken,deviceId);
             await this.guestRequestsRepo.updateRequests(guest.id)
             return {accessToken,refreshToken}
@@ -35,8 +35,8 @@ class GuestService{
               if(!isAuth){
                 throw new GuestControllerError("invalid token",EGuestControllerErrorType.invalidToken,401);
               }
-            const accessToken= jwtTool.generateAccessToken(deviceId);
-            const refreshToken= jwtTool.generateRefreshToken(deviceId);
+            const accessToken= jwtTool.generateAccessToken(deviceId,"guest");
+            const refreshToken= jwtTool.generateRefreshToken(deviceId,"guest");
             const result=await this.guestTokenRepo.updateToken(refreshToken,deviceId);
             return {accessToken,refreshToken}
         } catch (error) {

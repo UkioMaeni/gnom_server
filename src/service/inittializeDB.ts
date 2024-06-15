@@ -10,6 +10,7 @@ import GuestTokens from "../models/guest_tokens"
 import Transaction from "../models/transaction"
 import MailCode from "../models/mailCode"
 import FCM from "../models/fcm"
+import UnreadMessages from "../models/unreadMessages"
 class InitializeDBService{
     
     async initializeModelDB():Promise<boolean>{
@@ -35,6 +36,7 @@ class InitializeDBService{
         await  Transaction.sync({ alter: true });
         await  MailCode.sync({ alter: true });
         await  FCM.sync({ alter: true });
+        await UnreadMessages.sync({ alter: true });
     }
 }
 

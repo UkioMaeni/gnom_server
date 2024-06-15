@@ -36,24 +36,24 @@ class JWTTools{
         }
     }
 
-    generateAccessToken=(id:number|string):string=>{
+    generateAccessToken=(id:number|string,type:string):string=>{
         try {
             const key= process.env.ACCESS_TOKEN;
             if(!key){
                 throw new Error("no access key");
             }
-            return JWT.sign({"sub":id}, key, { expiresIn: '15m' });
+            return JWT.sign({"sub":id,type:type}, key, { expiresIn: '15m' });
         } catch (error) {
             throw error;
         }
     } 
-    generateRefreshToken=(id:number|string):string=>{
+    generateRefreshToken=(id:number|string,type:string):string=>{
         try {
             const key= process.env.REFRESH_TOKEN;
             if(!key){
                 throw new Error("no refresh key");
             }
-            return JWT.sign({"sub":id}, key, { expiresIn: '14d' });
+            return JWT.sign({"sub":id,type:type}, key, { expiresIn: '14d' });
         } catch (error) {
             throw error;
         }

@@ -7,7 +7,7 @@ class FireBaseService{
             credential: admin.credential.cert(serviceAccount)
         });
     }
-    async sendNotification(fcm:string,text:string,subjectType:string):Promise<void>{
+    async sendNotification(fcm:string,messageType:string):Promise<void>{
         const message:Message = {
             token:fcm, 
             notification: {
@@ -15,8 +15,7 @@ class FireBaseService{
               body: 'Check message or push in app'
             },
             data: {
-              text,
-              subjectType
+              messageType
             }
           };
           await admin.messaging().send(message)

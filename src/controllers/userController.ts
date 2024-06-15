@@ -4,6 +4,9 @@ import mailService from "../service/mailer/mailer"
 import UserService from "../service/userService"
 import { GuestControllerError } from '../service/customError/customError';
 import jwt from '../service/JWT/jwt';
+import UnreadMessages, { UnreadMessagesRow } from '../models/unreadMessages';
+import User, { UserRow } from '../models/user';
+import Guest, { GuestRow } from '../models/guest';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class UserController {
@@ -161,6 +164,66 @@ class UserController {
             return res.send("empty");
           }
           return res.send(userDto);
+        } catch (error) { 
+          console.log(error);
+          if(error instanceof GuestControllerError){
+            res.status(error.statusCode).send(null);
+            return;
+          }
+          res.status(500).send(error);
+        }
+      }
+      checkUnreadMessages:ControllerFunction=async(req, res) => {
+        try {
+          const token = req.headers.authorization;
+          console.log(token);
+          
+          if(!token){
+           return res.status(401).send("no token");
+          }
+          const tokenRepo=await jwt.getPayloadInAccess(token)
+           console.log(tokenRepo);
+           
+           if(!tokenRepo){
+            return res.status(401).send("неавтор");
+           }
+           let user:User|Guest|null;
+           let messages:UnreadMessages[];
+           if(tokenRepo["type"]=="user"){
+              user =await User.findOne({
+                where:{
+                  [UserRow.login]:tokenRepo.sub,
+                }
+              })
+              if(!user){
+                return res.status(401).send("неавтор");
+              }
+              messages = await UnreadMessages.findAll({
+                where:{
+                  [UnreadMessagesRow.user_id]:user.id
+                }
+              })
+            }else if(tokenRepo["type"]=="guest"){
+              user =await Guest.findOne({
+                where:{
+                  [GuestRow.deviceId]:tokenRepo.sub,
+                }
+              })
+              if(!user){
+                return res.status(401).send("неавтор");
+              }
+              messages = await UnreadMessages.findAll({
+                where:{
+                  [UnreadMessagesRow.guest_id]:user.id
+                }
+              })
+            }else{
+              return res.status(401).send("неавтор");
+            }
+            return res.send(messages);
+        
+          
+          
         } catch (error) { 
           console.log(error);
           if(error instanceof GuestControllerError){

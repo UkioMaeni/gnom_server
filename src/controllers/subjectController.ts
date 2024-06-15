@@ -9,9 +9,10 @@ import GuestTokens,{GuestTokensRow} from "../models/guest_tokens"
 import UserTokens,{UserTokensRow} from "../models/user_tokens"
 import User,{UserRow} from '../models/user';
 import Transaction, { TransactionRow } from '../models/transaction';
-import Guest from '../models/guest';
+import Guest, { GuestRow } from '../models/guest';
 import { randomUUID } from 'crypto';
 import jwt from '../service/JWT/jwt';
+import { TokenExpiredError } from 'jsonwebtoken';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class SubjectController {
@@ -37,11 +38,23 @@ class SubjectController {
            if(!tokenRepo){
             return res.status(401).send("неавтор");
            }
-           const user =await User.findOne({
-            where:{
-              [UserRow.login]:tokenRepo.sub,
-            }
-           })
+           let user:User|Guest|null;
+           if(tokenRepo["type"]=="user"){
+              user =await User.findOne({
+                where:{
+                  [UserRow.login]:tokenRepo.sub,
+                }
+              })
+           }else if(tokenRepo["type"]=="guest"){
+            user =await Guest.findOne({
+              where:{
+                [GuestRow.deviceId]:tokenRepo.sub,
+              }
+            })
+           }else{
+            return res.status(401).send("неавтор");
+           }
+           
            console.log(user);
            if(!user){
               return res.status(401).send("неавтор");
@@ -112,7 +125,9 @@ class SubjectController {
           
         } catch (error) { 
           console.log(error);
-          
+          if(error instanceof TokenExpiredError){
+            return res.status(401).send(error);
+          }
           res.status(500).send(error);
         }
       }

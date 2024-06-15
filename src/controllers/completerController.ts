@@ -8,6 +8,7 @@ import Transaction,{TransactionRow} from "../models/transaction"
 import firebaseService from "../firebase/firebase"
 import FCM, { FCMRow } from '../models/fcm';
 import jwt from '../service/JWT/jwt';
+import UnreadMessages, { UnreadMessagesRow } from '../models/unreadMessages';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class CompleterController {
@@ -31,22 +32,35 @@ class CompleterController {
            }
            const [_,type]=transaction.uuid.split(".")
            if(transaction.user_id){
+            await UnreadMessages.create({
+              [UnreadMessagesRow.text]:text,
+              [UnreadMessagesRow.subject_type]:type,
+              [UnreadMessagesRow.user_id]:transaction.user_id,
+              [UnreadMessagesRow.guest_id]:null,
+            })
             const token =await FCM.findOne({
               where:{
                 [FCMRow.user_id]:transaction.user_id
               }
             })
             if(token){
-              firebaseService.sendNotification(token.token,text,type)
+
+              firebaseService.sendNotification(token.token,"unread")
             }
            }else if(transaction.guest_id){
+            await UnreadMessages.create({
+              [UnreadMessagesRow.text]:text,
+              [UnreadMessagesRow.subject_type]:type,
+              [UnreadMessagesRow.user_id]:null,
+              [UnreadMessagesRow.guest_id]:transaction.guest_id,
+            })
             const token =await FCM.findOne({
               where:{
                 [FCMRow.guest_id]:transaction.guest_id
               }
             })
             if(token){
-              firebaseService.sendNotification(token.token,text,type)
+              firebaseService.sendNotification(token.token,"unread")
             }
            }
            //firebaseService.sendNotification()
