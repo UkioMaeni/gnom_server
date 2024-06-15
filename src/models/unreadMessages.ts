@@ -3,7 +3,7 @@ import { DataTypes, Model } from 'sequelize';
 
 export enum UnreadMessagesRow{
     id="id",
-    text="token",
+    text="text",
     subject_type="subject_type",
     user_id="user_id",
     guest_id="guest_id",
