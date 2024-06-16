@@ -33,6 +33,7 @@ class CompleterController {
            const [_,type]=transaction.uuid.split(".")
            if(transaction.user_id){
             await UnreadMessages.create({
+              [UnreadMessagesRow.message_id]:transaction.message_id,
               [UnreadMessagesRow.text]:text,
               [UnreadMessagesRow.subject_type]:type,
               [UnreadMessagesRow.user_id]:transaction.user_id,
@@ -49,6 +50,7 @@ class CompleterController {
             }
            }else if(transaction.guest_id){
             await UnreadMessages.create({
+              [UnreadMessagesRow.message_id]:transaction.message_id,
               [UnreadMessagesRow.text]:text,
               [UnreadMessagesRow.subject_type]:type,
               [UnreadMessagesRow.user_id]:null,

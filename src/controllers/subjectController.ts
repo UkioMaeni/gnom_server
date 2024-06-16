@@ -28,7 +28,7 @@ class SubjectController {
             return res.status(401).send("неавтор");
            }
            
-          const {type,text}=req.body as {type:string,text:string|undefined};
+          const {type,text,messageId}=req.body as {type:string,text:string|undefined,messageId:string};
           if(!type){
             return res.status(400).send("нет типа");
            }
@@ -66,32 +66,32 @@ class SubjectController {
               case "parafrase":
                 result=await  subjectService.paraphrasingText(file,text,"ru")
                 if(result){
-                  return res.send({code:0,result:result});
+                  return res.send({code:0,result:result,messageId:messageId});
                 }
               break;
               case "math":
-                await this.createTransaction(uuid,"math",user);
+                await this.createTransaction(uuid,"math",user,messageId);
                 result=await subjectService.math(file,text,"ru",uuid+".math")
                 if(result==0){
-                  return res.send({code:0,result:""});
+                  return res.send({code:0,result:"",});
                 }
               break;
               case "referat":
-                await this.createTransaction(uuid,"referat",user);
+                await this.createTransaction(uuid,"referat",user,messageId);
                 result = await subjectService.referat(file,text,"ru",uuid+".referat") as number
                 if(result==0){
                   return res.send({code:0,result:""});
                 }
               break;
               case "essay":
-                await this.createTransaction(uuid,"essay",user);
+                await this.createTransaction(uuid,"essay",user,messageId);
                 result = await subjectService.essay(file,text,"ru",uuid+".essay") as string
                 if(result){
-                  return res.send({code:0,result:result});
+                  return res.send({code:0,result:result,messageId:messageId});
                 }
               break;
               case "presentation":
-                await this.createTransaction(uuid,"presentation",user);
+                await this.createTransaction(uuid,"presentation",user,messageId);
                 result = await subjectService.presentation(file,text,"ru",uuid)
                 if(result){
                   return res.send({code:0,result:""});
@@ -100,13 +100,13 @@ class SubjectController {
               case "reduce":
                 result = await subjectService.reduce(file,text,"ru") as string
                 if(result){
-                  return res.send({code:0,result:result});
+                  return res.send({code:0,result:result,messageId:messageId});
                 }
               break;
               case "sovet":
                 result = await subjectService.sovet(file,text,"ru")
                 if(result){
-                  return res.send({code:0,result:result});
+                  return res.send({code:0,result:result,messageId:messageId});
                 }
               break;
            }
@@ -131,9 +131,10 @@ class SubjectController {
           res.status(500).send(error);
         }
       }
-      private async createTransaction(transactionId:string,subject:string,auth:User|Guest){
+      private async createTransaction(transactionId:string,subject:string,auth:User|Guest,messageId:string){
         await Transaction.create({
             [TransactionRow.uuid]:transactionId+"."+subject,
+            [TransactionRow.message_id]:messageId,
             [TransactionRow.user_id]:(auth instanceof User)?auth.id:null,
             [TransactionRow.guest_id]:(auth instanceof Guest)?auth.id:null,
         })
