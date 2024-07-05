@@ -22,17 +22,17 @@ FCM.init(
         },
         token: {
             type: DataTypes.STRING,
-            unique:true,
+            unique:false,
             allowNull: false,
         },
         user_id: {
             type: DataTypes.INTEGER,
-            unique:true,
+            unique:false,
             allowNull: true,
         },
         guest_id: {
             type: DataTypes.STRING,
-            unique:true,
+            unique:false,
             allowNull: true,
         },
         

@@ -9,13 +9,16 @@ import UserTokens from "../models/user_tokens"
 import GuestTokens from "../models/guest_tokens"
 import Transaction from "../models/transaction"
 import MailCode from "../models/mailCode"
+import SupportAccess from "../models/support_access"
 import FCM from "../models/fcm"
 import UnreadMessages from "../models/unreadMessages"
+import {startBotPooling} from "./tgBot/tgBot"
 class InitializeDBService{
     
     async initializeModelDB():Promise<boolean>{
         try {
           await db.authenticate();
+          startBotPooling();
           await this.initializeModels();
           return true;
         } catch (error) {
@@ -26,6 +29,7 @@ class InitializeDBService{
     }
 
     private async initializeModels(){
+        await SupportAccess.sync({alter:true})
         await  User.sync({ alter: true });
         await  Guest.sync({ alter: true });
         await  Requests.sync({ alter: true });

@@ -8,7 +8,8 @@ class FireBaseService{
         });
     }
     async sendNotification(fcm:string,messageType:string):Promise<void>{
-        const message:Message = {
+        try {
+          const message:Message = {
             token:fcm, 
             notification: {
               title: 'Subject completed',
@@ -19,6 +20,10 @@ class FireBaseService{
             }
           };
           await admin.messaging().send(message)
+        } catch (error) {
+          console.log(error);
+          
+        }
                 
     }
 }
