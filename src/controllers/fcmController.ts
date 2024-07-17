@@ -45,7 +45,7 @@ class SubjectController {
               
               return res.status(401).send("неавтор");
              }
-             await FCM.findOrCreate({
+             const fcm = await FCM.findOrCreate({
               where:{
                 [FCMRow.token]:token,
               },
@@ -55,6 +55,8 @@ class SubjectController {
                 [FCMRow.guest_id]:guest.id,
               }
             });
+            console.log(fcm);
+            console.log(guest.id);
            }else if(tokenRepo["type"]=="user"){
             const user =await User.findOne({
               where:{
