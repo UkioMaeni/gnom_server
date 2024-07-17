@@ -9,6 +9,7 @@ import FCM,{FCMRow} from "../models/fcm"
 import UserTokens, { UserTokensRow } from "../models/user_tokens"
 import User, { UserRow } from "../models/user"
 import jwt from '../service/JWT/jwt';
+import Guest, { GuestRow } from '../models/guest';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class SubjectController {
@@ -27,26 +28,55 @@ class SubjectController {
             return res.status(400).send("нет токена");
           }
           const tokenRepo=jwt.getPayloadInAccess(authorization)
+          console.log(tokenRepo);
+          
            if(!tokenRepo){
             return res.status(401).send("неавтор");
            }
-           const user =await User.findOne({
-            where:{
-              [UserRow.login]:tokenRepo.sub,
-            }
-           })
-           if(!user){
-            return res.status(401).send("неавтор");
+           console.log(tokenRepo);
+           if(tokenRepo["type"]=="guest"){
+            const guest =await Guest.findOne({
+              where:{
+                [GuestRow.deviceId]:tokenRepo.sub,
+              }
+             })
+             console.log(guest);
+             if(!guest){
+              
+              return res.status(401).send("неавтор");
+             }
+             await FCM.findOrCreate({
+              where:{
+                [FCMRow.token]:token,
+              },
+              defaults:{
+                [FCMRow.token]:token,
+                [FCMRow.user_id]:null,
+                [FCMRow.guest_id]:guest.id,
+              }
+            });
+           }else if(tokenRepo["type"]=="user"){
+            const user =await User.findOne({
+              where:{
+                [UserRow.login]:tokenRepo.sub,
+              }
+             })
+             if(!user){
+              return res.status(401).send("неавтор");
+              
+             }
+             await FCM.findOrCreate({
+              where:{
+                [FCMRow.token]:token,
+              },
+              defaults:{
+                [FCMRow.token]:token,
+                [FCMRow.user_id]:user.id,
+              }
+            });
            }
-          await FCM.findOrCreate({
-            where:{
-              [FCMRow.token]:token,
-            },
-            defaults:{
-              [FCMRow.token]:token,
-              [FCMRow.user_id]:user.id,
-            }
-          });
+           
+          
           return res.send("OK");
         } catch (error) { 
           console.log(error);

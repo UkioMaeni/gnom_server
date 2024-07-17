@@ -7,6 +7,7 @@ import fs from 'fs';
 let whiteListSupports:Array<string>=[]
 
 export const startBotPooling=async()=>{
+    return;
     await initConfigFile();
     const bot = new TelegramBot(token, {polling: true});
     console.log(whiteListSupports);
