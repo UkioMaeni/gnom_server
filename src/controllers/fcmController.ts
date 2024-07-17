@@ -55,6 +55,16 @@ class SubjectController {
                 [FCMRow.guest_id]:guest.id,
               }
             });
+            if(fcm[1]){
+              FCM.update({
+                [FCMRow.guest_id]:guest.id,
+              },{
+                where:{
+                  [FCMRow.token]:token,
+                }
+              }
+            )
+            }
             console.log(fcm);
             console.log(guest.id);
            }else if(tokenRepo["type"]=="user"){
@@ -67,7 +77,7 @@ class SubjectController {
               return res.status(401).send("неавтор");
               
              }
-             await FCM.findOrCreate({
+             const fcm= await FCM.findOrCreate({
               where:{
                 [FCMRow.token]:token,
               },
@@ -76,6 +86,16 @@ class SubjectController {
                 [FCMRow.user_id]:user.id,
               }
             });
+            if(fcm[1]){
+              FCM.update({
+                [FCMRow.user_id]:user.id,
+              },{
+                where:{
+                  [FCMRow.token]:token,
+                }
+              }
+            )
+            }
            }
            
           
