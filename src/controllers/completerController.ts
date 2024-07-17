@@ -45,7 +45,6 @@ class CompleterController {
               }
             })
             if(token){
-
               firebaseService.sendNotification(token.token,"unread")
             }
            }else if(transaction.guest_id){
@@ -61,6 +60,8 @@ class CompleterController {
                 [FCMRow.guest_id]:transaction.guest_id
               }
             })
+            console.log(token);
+            
             if(token){
               firebaseService.sendNotification(token.token,"unread")
             }
