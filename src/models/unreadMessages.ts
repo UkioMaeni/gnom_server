@@ -41,7 +41,7 @@ UnreadMessages.init(
             allowNull: true,
         },
         guest_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         
