@@ -54,7 +54,7 @@ class CompleterController {
               [UnreadMessagesRow.subject_type]:type,
               [UnreadMessagesRow.user_id]:null,
               [UnreadMessagesRow.guest_id]:transaction.guest_id,
-            })
+            });
             const token =await FCM.findOne({
               where:{
                 [FCMRow.guest_id]:transaction.guest_id
