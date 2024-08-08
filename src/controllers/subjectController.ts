@@ -109,6 +109,16 @@ class SubjectController {
                   return res.send({code:0,result:result,messageId:messageId});
                 }
               break;
+              case "generation":
+                await this.createTransaction(uuid,"generation",user,messageId);
+                result = await subjectService.generation(file,text,"ru",uuid+".generation")
+                if(result==0){
+                  return res.send({code:0,result:""});
+                }
+                if(result){
+                  return res.send({code:0,result:result,messageId:messageId});
+                }
+              break;
            }
            res.status(400).send({code:0,result:"error request"});
           //  const formdata=new FormData()
