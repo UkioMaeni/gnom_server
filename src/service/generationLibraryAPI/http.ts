@@ -115,10 +115,11 @@ class FastAPIService{
           
             return 0;
         } catch (error) {
-            if(error instanceof AxiosError){
-                console.log(error.response?.status);
-                console.log(error.response?.statusText);
-            }
+          if(error instanceof Response){
+            const er=await error.json()
+            console.log(er["detail"][0]["loc"]);
+            
+        }
             
             return -1;
         }
