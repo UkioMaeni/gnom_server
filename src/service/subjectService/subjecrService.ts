@@ -77,7 +77,7 @@ class SubjectService{
         }  
         return "";
     }
-    async presentation(file:Express.Multer.File|undefined,text:string|undefined,lang:string,transaction:string):Promise<string>{
+    async presentation(file:Express.Multer.File|undefined,text:string|undefined,lang:string,transaction:string):Promise<number>{
 
         if(text){
             console.log("TEXT");
@@ -86,9 +86,9 @@ class SubjectService{
             formdata.append("lang",lang);
             formdata.append("transaction_id ",transaction);
             console.log(formdata);
-            FastAPIService.sendPresentation(formdata)
+            return FastAPIService.sendPresentation(formdata)
         }  
-        return "";
+        return -1;
     }
     async reduce(file:Express.Multer.File|undefined,text:string|undefined,lang:string):Promise<string>{
         if(file){

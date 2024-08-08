@@ -106,6 +106,8 @@ class FastAPIService{
                 body: formData,
               })
               if(!response.ok){
+                console.log("err pre");
+                
                 throw new Error(`Ошибка HTTP: ${response.status}`);
               }
               const data = await response.json();
