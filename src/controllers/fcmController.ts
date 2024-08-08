@@ -48,6 +48,7 @@ class SubjectController {
              const fcm = await FCM.findOrCreate({
               where:{
                 [FCMRow.token]:token,
+                [FCMRow.guest_id]:guest.id,
               },
               defaults:{
                 [FCMRow.token]:token,
@@ -80,6 +81,7 @@ class SubjectController {
              const fcm= await FCM.findOrCreate({
               where:{
                 [FCMRow.token]:token,
+                [FCMRow.user_id]:user.id,
               },
               defaults:{
                 [FCMRow.token]:token,
