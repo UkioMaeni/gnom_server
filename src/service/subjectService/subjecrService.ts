@@ -129,7 +129,18 @@ class SubjectService{
         }  
         return "";
     }
-    
+    async generation(file:Express.Multer.File|undefined,text:string|undefined,lang:string,transaction:string):Promise<number>{
+        if(text){
+            console.log("TEXT");
+            const formdata=new FormData()
+            formdata.append("prompt",text);
+            formdata.append("lang",lang);
+            formdata.append("transaction_id",transaction);
+            console.log(formdata);
+            return await FastAPIService.generation(formdata)
+        }  
+        return -1;
+    }
     
 
 }

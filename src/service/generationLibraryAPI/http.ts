@@ -185,6 +185,33 @@ class FastAPIService{
             return "";
         }
     }
+    generation=async(formData:FormData):Promise<number>=>{
+      try {
+          console.log("send");
+          const response=await fetch('http://45.12.237.135/image_generation', {
+              method: 'POST',
+              headers: {
+              },
+              body: formData,
+            })
+            if(!response.ok){
+              throw response;
+            }
+            const data = await response.json();
+              console.log(data);
+              
+            return 0;
+      } catch (error) {
+          if(error instanceof Response){
+              const er=await error.json()
+              console.log(er["detail"][0]["loc"]);
+              
+          }
+        
+          
+          return -1;
+      }
+  }
 }
 
 export default new FastAPIService();
