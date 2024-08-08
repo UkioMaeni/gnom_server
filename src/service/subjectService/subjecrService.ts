@@ -78,7 +78,8 @@ class SubjectService{
         return "";
     }
     async presentation(file:Express.Multer.File|undefined,text:string|undefined,lang:string,transaction:string):Promise<number>{
-
+        console.log(lang);
+        
         if(text){
             console.log("TEXT");
             const formdata=new FormData()
