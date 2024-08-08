@@ -185,7 +185,7 @@ class FastAPIService{
             return "";
         }
     }
-    generation=async(formData:FormData):Promise<number>=>{
+    generation=async(formData:FormData):Promise<string>=>{
       try {
           console.log("send");
           const response=await fetch('http://45.12.237.135/image_generation', {
@@ -200,7 +200,7 @@ class FastAPIService{
             const data = await response.json();
               console.log(data);
               
-            return 0;
+            return data["link"];
       } catch (error) {
           if(error instanceof Response){
               const er=await error.json()
@@ -209,7 +209,7 @@ class FastAPIService{
           }
         
           
-          return -1;
+          return "";
       }
   }
 }

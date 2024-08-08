@@ -129,7 +129,7 @@ class SubjectService{
         }  
         return "";
     }
-    async generation(file:Express.Multer.File|undefined,text:string|undefined,lang:string,transaction:string):Promise<number>{
+    async generation(file:Express.Multer.File|undefined,text:string|undefined,lang:string,transaction:string):Promise<string>{
         if(text){
             console.log("TEXT");
             const formdata=new FormData()
@@ -139,7 +139,7 @@ class SubjectService{
             console.log(formdata);
             return await FastAPIService.generation(formdata)
         }  
-        return -1;
+        return "";
     }
     
 

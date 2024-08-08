@@ -110,11 +110,9 @@ class SubjectController {
                 }
               break;
               case "generation":
-                await this.createTransaction(uuid,"generation",user,messageId);
+                
                 result = await subjectService.generation(file,text,"ru",uuid+".generation")
-                if(result==0){
-                  return res.send({code:0,result:""});
-                }
+                
                 if(result){
                   return res.send({code:0,result:result,messageId:messageId});
                 }
