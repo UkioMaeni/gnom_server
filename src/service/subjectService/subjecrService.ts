@@ -71,7 +71,7 @@ class SubjectService{
             const formdata=new FormData()
             formdata.append("topic",text);
             formdata.append("lang",lang);
-            formdata.append("transaction_id ",transaction);
+            formdata.append("transaction_id",transaction);
             console.log(formdata);
             return await FastAPIService.sendEssay(formdata)
         }  
@@ -84,7 +84,8 @@ class SubjectService{
             const formdata=new FormData()
             formdata.append("topic",text);
             formdata.append("lang",lang);
-            formdata.append("transaction_id ",transaction);
+            formdata.append("transaction_id",transaction);
+            formdata.append("template_number",'1');
             console.log(formdata);
             return FastAPIService.sendPresentation(formdata)
         }  
@@ -101,7 +102,7 @@ class SubjectService{
             formdata.append("content_type","image");
             formdata.append("content",blob,"file.jpg");
             formdata.append("lang",lang);
-            formdata.append("is_handwritten ","false");
+            formdata.append("is_handwritten","false");
             return await FastAPIService.sendReduce(formdata)
         }
         if(text){
