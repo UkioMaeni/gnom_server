@@ -14,7 +14,9 @@ class GuestRequestsRepo{
                 [GuestRequestsRow.essay]: 40,
                 [GuestRequestsRow.presentation]: 40,
                 [GuestRequestsRow.reduction]: 40,
-                [GuestRequestsRow.paraphrase]: 40
+                [GuestRequestsRow.paraphrase]: 40,
+                [GuestRequestsRow.sovet]: 40,
+                [GuestRequestsRow.generation]: 40
                }
             });
             return guestRequsts[0];
@@ -42,7 +44,9 @@ class GuestRequestsRepo{
                  [GuestRequestsRow.essay]: 40,
                  [GuestRequestsRow.presentation]: 40,
                  [GuestRequestsRow.reduction]: 40,
-                 [GuestRequestsRow.paraphrase]: 40
+                 [GuestRequestsRow.paraphrase]: 40,
+                 [GuestRequestsRow.sovet]: 40,
+                 [GuestRequestsRow.generation]: 40
                 }
              });
             return guestRequsts[0];

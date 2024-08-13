@@ -42,7 +42,9 @@ class UserRequestsRepo{
                  [UserRequestsRow.essay]: 10,
                  [UserRequestsRow.presentation]: 10,
                  [UserRequestsRow.reduction]: 10,
-                 [UserRequestsRow.paraphrase]: 10
+                 [UserRequestsRow.paraphrase]: 10,
+                 [UserRequestsRow.sovet]: 10,
+                 [UserRequestsRow.generation]: 10
                 }
              });
             return guestRequsts[0];

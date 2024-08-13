@@ -12,6 +12,8 @@ export enum GuestRequestsRow{
     presentation="presentation",
     reduction="reduction",
     paraphrase="paraphrase",
+    sovet="sovet",
+    generation="generation"
 }
 class GuestRequests extends Model{
     declare id:number;
@@ -22,6 +24,8 @@ class GuestRequests extends Model{
     declare presentation:number;
     declare reduction:number;
     declare paraphrase:number;
+    declare sovet:number;
+    declare generation:number;
 
 }
 GuestRequests.init(
@@ -60,6 +64,14 @@ GuestRequests.init(
             allowNull: false,
         },
         paraphrase: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        sovet: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        generation: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
