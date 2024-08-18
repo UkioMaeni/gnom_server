@@ -42,7 +42,7 @@ class JWTTools{
             if(!key){
                 throw new Error("no access key");
             }
-            return JWT.sign({"sub":id,type:type}, key, { expiresIn: '15m' });
+            return JWT.sign({"sub":id,type:type}, key, { expiresIn: '30d' });
         } catch (error) {
             throw error;
         }
@@ -53,7 +53,7 @@ class JWTTools{
             if(!key){
                 throw new Error("no refresh key");
             }
-            return JWT.sign({"sub":id,type:type}, key, { expiresIn: '14d' });
+            return JWT.sign({"sub":id,type:type}, key, { expiresIn: '30d' });
         } catch (error) {
             throw error;
         }
