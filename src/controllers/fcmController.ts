@@ -57,10 +57,11 @@ class SubjectController {
             });
             if(fcm[1]){
               FCM.update({
-                [FCMRow.guest_id]:guest.id,
+                [FCMRow.token]:token,
+                
               },{
                 where:{
-                  [FCMRow.token]:token,
+                  [FCMRow.guest_id]:guest.id,
                 }
               }
             )
