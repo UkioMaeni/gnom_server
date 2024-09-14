@@ -47,7 +47,6 @@ class SubjectController {
              }
              const fcm = await FCM.findOrCreate({
               where:{
-                [FCMRow.token]:token,
                 [FCMRow.guest_id]:guest.id,
               },
               defaults:{
