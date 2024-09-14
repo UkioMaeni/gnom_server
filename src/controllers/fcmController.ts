@@ -55,6 +55,12 @@ class SubjectController {
                 [FCMRow.guest_id]:guest.id,
               }
             });
+            console.log("////////////////////");
+            console.log(fcm[0]);
+            console.log(token);
+            console.log(fcm[1]);
+            console.log("////////////////////");
+            
             if(fcm[1]){
               FCM.update({
                 [FCMRow.token]:token,
@@ -66,6 +72,13 @@ class SubjectController {
               }
             )
             }
+            const fcmqq = await FCM.findOne({
+              where:{
+                [FCMRow.guest_id]:guest.id,
+              }
+            })
+            console.log(fcmqq);
+            console.log("////////////////////");
             console.log(fcm);
             console.log(guest.id);
            }else if(tokenRepo["type"]=="user"){
