@@ -120,8 +120,9 @@ class SubjectController {
                   return res.send({code:0,result:result,messageId:messageId});
                 }
               break;
+              default: res.status(400).send({code:0,result:"error request"});
            }
-           res.status(400).send({code:0,result:"error request"});
+           //
           //  const formdata=new FormData()
           //   const newFilePath = path.join(__dirname,`../tempFiles/${Date.now()}.png`);
           //   fs.writeFileSync(newFilePath, file.buffer)
