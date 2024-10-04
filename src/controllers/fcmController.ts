@@ -90,7 +90,6 @@ class SubjectController {
             })
             console.log(fcmqq);
             console.log("////////////////////");
-            console.log(fcm);
             console.log(guest.id);
            }else if(tokenRepo["type"]=="user"){
             const user =await User.findOne({

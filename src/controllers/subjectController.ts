@@ -13,6 +13,8 @@ import Guest, { GuestRow } from '../models/guest';
 import { randomUUID } from 'crypto';
 import jwt from '../service/JWT/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
+import UnreadMessages, { UnreadMessagesRow } from '../models/unreadMessages';
+import FCM, { FCMRow } from '../models/fcm';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class SubjectController {
@@ -64,9 +66,10 @@ class SubjectController {
            const uuid= randomUUID();
            switch(type){
               case "parafrase":
+                res.send({code:0,result:  null});
                 result=await  subjectService.paraphrasingText(file,text,"ru")
                 if(result){
-                  return res.send({code:0,result:result,messageId:messageId});
+                  return  this.addMessage(user,messageId,result,type);
                 }
               break;
               case "math":
@@ -137,6 +140,48 @@ class SubjectController {
             return res.status(401).send(error);
           }
           res.status(500).send(error);
+        }
+      }
+      
+      async addMessage(user:User|Guest,messageId:string,text: string,subjectType:string ){
+        try {
+          if("email" in user){
+            await UnreadMessages.create({
+              [UnreadMessagesRow.message_id]:messageId,
+              [UnreadMessagesRow.text]:text,
+              [UnreadMessagesRow.subject_type]:subjectType,
+              [UnreadMessagesRow.user_id]:user.id,
+              [UnreadMessagesRow.guest_id]:null,
+            })
+            const token =await FCM.findOne({
+              where:{
+                [FCMRow.user_id]:user.id
+              }
+            })
+            if(token){
+              firebaseService.sendNotification(token.token,"unread")
+            }
+           }else {
+            await UnreadMessages.create({
+              [UnreadMessagesRow.message_id]:messageId,
+              [UnreadMessagesRow.text]:text,
+              [UnreadMessagesRow.subject_type]:subjectType,
+              [UnreadMessagesRow.user_id]:null,
+              [UnreadMessagesRow.guest_id]:user.id,
+            });
+            const token =await FCM.findOne({
+              where:{
+                [FCMRow.guest_id]:user.id
+              }
+            })
+            console.log(token);
+            
+            if(token){
+              firebaseService.sendNotification(token.token,"unread")
+            }
+           }
+        } catch (error) {
+          
         }
       }
       private async createTransaction(transactionId:string,subject:string,auth:User|Guest,messageId:string){
