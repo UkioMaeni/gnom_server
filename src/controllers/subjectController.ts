@@ -166,6 +166,8 @@ class SubjectController {
               firebaseService.sendNotification(token.token,"unread")
             }
            }else {
+            
+            
             await UnreadMessages.create({
               [UnreadMessagesRow.message_id]:messageId,
               [UnreadMessagesRow.text]:text,
@@ -173,6 +175,7 @@ class SubjectController {
               [UnreadMessagesRow.user_id]:null,
               [UnreadMessagesRow.guest_id]:user.id,
             });
+            console.log("create guset mssage");
             const token =await FCM.findOne({
               where:{
                 [FCMRow.guest_id]:user.id
