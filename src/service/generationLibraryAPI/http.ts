@@ -38,7 +38,7 @@ class FastAPIService{
               }
               const data = await response.json();
               console.log(data);
-            return data['data'];
+            return data['paraphrased_text'];
         } catch (error) {
             if(error instanceof Response){
                 const er=await error.json()
