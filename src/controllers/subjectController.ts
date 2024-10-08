@@ -68,6 +68,8 @@ class SubjectController {
               case "parafrase":
                 res.send({code:0,result:  null});
                 result=await  subjectService.paraphrasingText(file,text,"ru")
+                console.log(result);
+                
                 if(result){
                   return  this.addMessage(user,messageId,result,type);
                 }
