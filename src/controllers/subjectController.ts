@@ -170,7 +170,7 @@ class SubjectController {
             }
            }else {
             
-            
+            console.log("start create guset mssage");
             await UnreadMessages.create({
               [UnreadMessagesRow.message_id]:messageId,
               [UnreadMessagesRow.text]:text,
@@ -178,7 +178,7 @@ class SubjectController {
               [UnreadMessagesRow.user_id]:null,
               [UnreadMessagesRow.guest_id]:user.id,
             });
-            console.log("create guset mssage");
+            console.log("stop create guset mssage");
             const token =await FCM.findOne({
               where:{
                 [FCMRow.guest_id]:user.id
