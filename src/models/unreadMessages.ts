@@ -25,7 +25,7 @@ UnreadMessages.init(
             primaryKey: true,
         },
         text: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         message_id: {
