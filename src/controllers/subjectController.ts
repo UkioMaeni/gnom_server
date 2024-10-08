@@ -102,23 +102,25 @@ class SubjectController {
                 }
               break;
               case "reduce":
+                res.send({code:0,result:  null});
                 result = await subjectService.reduce(file,text,"ru") as string
                 if(result){
-                  return res.send({code:0,result:result,messageId:messageId});
+                  return  this.addMessage(user,messageId,result,type);
                 }
               break;
               case "sovet":
+                res.send({code:0,result:  null});
                 result = await subjectService.sovet(file,text,"ru")
                 if(result){
-                  return res.send({code:0,result:result,messageId:messageId});
+                  return  this.addMessage(user,messageId,result,type);
                 }
               break;
               case "generation":
-                
+                res.send({code:0,result:  null});
                 result = await subjectService.generation(file,text,"ru",uuid+".generation")
                 
                 if(result){
-                  return res.send({code:0,result:result,messageId:messageId});
+                  return  this.addMessage(user,messageId,result,type);
                 }
               break;
               default: res.status(400).send({code:0,result:"error request"});
