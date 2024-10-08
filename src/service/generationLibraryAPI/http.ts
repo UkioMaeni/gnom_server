@@ -138,7 +138,11 @@ class FastAPIService{
               if(!response.ok){
                 throw  response;
               }
+              console.log(response);
+              
               const data = await response.json();
+              console.log("fdfdfd");
+              
               console.log(data);
               if(data["short_text"]){
                 return data["short_text"];
