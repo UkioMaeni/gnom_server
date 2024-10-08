@@ -151,8 +151,12 @@ class FastAPIService{
             return "";
         } catch (error) {
             if(error instanceof Response){
-                const er=await error.json()
-                console.log(er["detail"][0]["loc"]);
+                try {
+                  const er=await error.json()
+                  console.log(er["detail"][0]["loc"]);
+                } catch (error) {
+                  
+                }
                 
             }
             console.log("error");
