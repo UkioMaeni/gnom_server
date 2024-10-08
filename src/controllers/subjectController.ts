@@ -191,6 +191,7 @@ class SubjectController {
             }
            }
         } catch (error) {
+          console.log(error);
           
         }
       }
