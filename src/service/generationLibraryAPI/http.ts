@@ -135,10 +135,11 @@ class FastAPIService{
                 },
                 body: formData,
               })
+              console.log(response);
               if(!response.ok){
                 throw  response;
               }
-              console.log(response);
+              
               
               const data = await response.json();
               console.log("fdfdfd");
