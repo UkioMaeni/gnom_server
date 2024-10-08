@@ -90,6 +90,9 @@ class SubjectController {
                 res.send({code:0,result:  null});
                 
                 result = await subjectService.essay(file,text,"ru",uuid+".essay") as string
+                console.log(result);
+                console.log(user);
+                
                 if(result){
                   return  this.addMessage(user,messageId,result,type);
                 }
