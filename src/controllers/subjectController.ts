@@ -87,10 +87,11 @@ class SubjectController {
                 }
               break;
               case "essay":
-                await this.createTransaction(uuid,"essay",user,messageId);
+                res.send({code:0,result:  null});
+                
                 result = await subjectService.essay(file,text,"ru",uuid+".essay") as string
                 if(result){
-                  return res.send({code:0,result:result,messageId:messageId});
+                  return  this.addMessage(user,messageId,result,type);
                 }
               break;
               case "presentation":
