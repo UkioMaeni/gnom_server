@@ -14,7 +14,7 @@ class Mailer{
             // secure: false, // true for TLS, false for SSL
             auth: {
               user: 'priz.a@yandex.ru',
-              pass: '89045462751',
+              pass: 'ryiyaxowrargwpfq',
             }
           });
           const message = {
