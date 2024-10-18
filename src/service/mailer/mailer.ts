@@ -13,12 +13,12 @@ class Mailer{
             // port: 465,
             // secure: false, // true for TLS, false for SSL
             auth: {
-              user: 'priz.a@yandex.ru',
-              pass: 'ryiyaxowrargwpfq',
+              user: 'GnomHelper2024@yandex.com',
+              pass: 'wjkygxstsjyxguaa',
             }
           });
           const message = {
-            from: 'priz.a@yandex.ru',
+            from: 'GnomHelper2024@yandex.com',
             to: mail,
             subject: 'OTP Code',
             text: otp,
