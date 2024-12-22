@@ -16,6 +16,8 @@ class CompleterController {
 
   complete:ControllerFunction=async(req, res) => {
         try {
+          console.log("completer");
+          
           console.log(req.body);
           
           const {transaction_id,text}=req.body;
