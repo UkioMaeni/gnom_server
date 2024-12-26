@@ -1,7 +1,5 @@
 import admin from 'firebase-admin';
 import { Message } from 'firebase-admin/lib/messaging/messaging-api';
-import httpProxyAgent from 'https-proxy-agent';
-const httpAgent = new httpProxyAgent.HttpsProxyAgent('http://127.0.0.1:8001/');
 var serviceAccount =require('./fboptions.json')
 
    let app:admin.app.App|null=null;
