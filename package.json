@@ -25,7 +25,7 @@
     "blob-util": "^2.0.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "firebase-admin": "^12.1.1",
+    "firebase-admin": "^13.0.2",
     "gmail-node-mailer": "^1.9.1",
     "jsonwebtoken": "^9.0.2",
     "mailer": "^0.6.7",
