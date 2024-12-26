@@ -3,9 +3,11 @@ import { Message } from 'firebase-admin/lib/messaging/messaging-api';
 var serviceAccount =require('./fboptions.json')
 class FireBaseService{
     initialize(){
-        admin.initializeApp({
+        const app=admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
         });
+        console.log(app.auth().app.options.credential);
+        
     }
     async sendNotification(fcm:string,messageType:string):Promise<void>{
         try {
