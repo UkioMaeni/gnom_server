@@ -37,8 +37,14 @@ class FastAPIService{
                 throw response;
               }
               const data = await response.json();
+              if(data["status_code"]==400){
+                return "er/"+data["message"]
+              }
+              if(data["data"]){
+                return data["data"];
+              }
               console.log(data);
-            return data['paraphrased_text'];
+            return "";
         } catch (error) {
             if(error instanceof Response){
                 const er=await error.json()
@@ -85,8 +91,11 @@ class FastAPIService{
               }
               const data = await response.json();
               console.log(data);
-              if(data["composition"]){
-                return data["composition"];
+              if(data["status_code"]==400){
+                return "er/"+data["message"]
+              }
+              if(data["data"]){
+                return data["data"];
               }
             return "";
         } catch (error) {
@@ -99,7 +108,7 @@ class FastAPIService{
     sendPresentation=async(formData:any):Promise<number>=>{
         try {
             console.log(formData);
-            const response=await fetch('http://45.12.237.135/presentation_generation', {
+            const response=await fetch('http://31.129.106.28:8000/presentation_generation', {
                 method: 'POST',
                 headers: {
                 },
@@ -147,8 +156,8 @@ class FastAPIService{
                 return "er/"+data["message"]
               }
               console.log(data);
-              if(data["short_text"]){
-                return data["short_text"];
+              if(data["data"]){
+                return data["data"];
               }
             return "";
         } catch (error) {
@@ -181,8 +190,11 @@ class FastAPIService{
               }
               const data = await response.json();
               console.log(data);
-              if(data["advice"]){
-                return data["advice"];
+              if(data["status_code"]==400){
+                return "er/"+data["message"]
+              }
+              if(data["data"]){
+                return data["data"];
               }
             return "";
         } catch (error) {

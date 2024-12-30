@@ -108,6 +108,7 @@ class SubjectController {
               break;
               case "reduce":
                 res.send({code:0,result:  null});
+                //firebaseService.sendNotification("73787F5B0C1F2F2C01B6E114094805604770DBFA105BC16F516F8640DFB38E66","unread")
                 result = await subjectService.reduce(file,text,"ru") as string
                 if(result){
                   return  this.addMessage(user,messageId,result,type);
