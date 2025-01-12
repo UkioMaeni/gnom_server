@@ -223,7 +223,13 @@ class FastAPIService{
             const data = await response.json();
               console.log(data);
               
-            return data["link"];
+              if(data["status_code"]==400){
+                return "er/"+data["message"]
+              }
+              if(data["data"]){
+                return data["data"];
+              }
+              return "";
       } catch (error) {
           if(error instanceof Response){
               const er=await error.json()
