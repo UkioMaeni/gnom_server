@@ -143,7 +143,7 @@ class SubjectController {
           //  if(result==0){
           //   fs.unlink(newFilePath,()=>{});
           //  }
-          res.status(400).send("");
+          
         } catch (error) { 
           console.log(error);
           if(error instanceof TokenExpiredError){
