@@ -84,7 +84,7 @@ class SubjectService{
             console.log("TEXT");
             const formdata=new FormData()
             formdata.append("topic",text);
-            formdata.append("language",lang);
+            formdata.append("lang",lang);
             formdata.append("transaction_id",transaction);
             formdata.append("template_number",'1');
             console.log(formdata);
