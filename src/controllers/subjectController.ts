@@ -30,7 +30,13 @@ class SubjectController {
             return res.status(401).send("неавтор");
            }
            
-          const {type,text,messageId}=req.body as {type:string,text:string|undefined,messageId:string};
+          let {type,text,messageId,lang}=req.body as {type:string,text:string|undefined,messageId:string,lang:string};
+          if(!lang){
+            return res.status(400).send("нет языка");
+          }
+          if(lang!="ru" && lang!="ar" && lang!="en"){
+            lang= "en";
+          }
           if(!type){
             return res.status(400).send("нет типа");
            }
@@ -67,7 +73,7 @@ class SubjectController {
            switch(type){
               case "parafrase":
                 res.send({code:0,result:  null});
-                result=await  subjectService.paraphrasingText(file,text,"ru")
+                result=await  subjectService.paraphrasingText(file,text,lang)
                 console.log(result);
                 
                 if(result){
@@ -76,14 +82,14 @@ class SubjectController {
               break;
               case "math":
                 await this.createTransaction(uuid,"math",user,messageId);
-                result=await subjectService.math(file,text,"ru",uuid+".math")
+                result=await subjectService.math(file,text,lang,uuid+".math")
                 if(result==0){
                   return res.send({code:0,result:"",});
                 }
               break;
               case "referat":
                 await this.createTransaction(uuid,"referat",user,messageId);
-                result = await subjectService.referat(file,text,"ru",uuid+".referat") as number
+                result = await subjectService.referat(file,text,lang,uuid+".referat") as number
                 if(result==0){
                   return res.send({code:0,result:""});
                 }
@@ -91,7 +97,7 @@ class SubjectController {
               case "essay":
                 res.send({code:0,result:  null});
                 
-                result = await subjectService.essay(file,text,"ru",uuid+".essay") as string
+                result = await subjectService.essay(file,text,lang,uuid+".essay") as string
                 console.log(result);
                 console.log(user);
                 
@@ -100,8 +106,9 @@ class SubjectController {
                 }
               break;
               case "presentation":
+                
                 await this.createTransaction(uuid,"presentation",user,messageId);
-                result = await subjectService.presentation(file,text,"ru",uuid+".presentation")
+                result = await subjectService.presentation(file,text,lang,uuid+".presentation")
                 if(result==0){
                   return res.send({code:0,result:""});
                 }
@@ -109,21 +116,21 @@ class SubjectController {
               case "reduce":
                 res.send({code:0,result:  null});
                 //firebaseService.sendNotification("73787F5B0C1F2F2C01B6E114094805604770DBFA105BC16F516F8640DFB38E66","unread")
-                result = await subjectService.reduce(file,text,"ru") as string
+                result = await subjectService.reduce(file,text,lang) as string
                 if(result){
                   return  this.addMessage(user,messageId,result,type);
                 }
               break;
               case "sovet":
                 res.send({code:0,result:  null});
-                result = await subjectService.sovet(file,text,"ru")
+                result = await subjectService.sovet(file,text,lang)
                 if(result){
                   return  this.addMessage(user,messageId,result,type);
                 }
               break;
               case "generation":
                 res.send({code:0,result:  null});
-                result = await subjectService.generation(file,text,"ru",uuid+".generation")
+                result = await subjectService.generation(file,text,lang,uuid+".generation")
                 
                 if(result){
                   return  this.addMessage(user,messageId,result,type);
@@ -131,6 +138,7 @@ class SubjectController {
               break;
               default: res.status(400).send({code:0,result:"error request"});
            }
+           return res.send({code:400,result:""});
            //
           //  const formdata=new FormData()
           //   const newFilePath = path.join(__dirname,`../tempFiles/${Date.now()}.png`);
