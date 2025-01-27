@@ -20,7 +20,7 @@ class CompleterController {
           
           console.log(req.body);
           
-          const {transaction_id,text}=req.body;
+          let {transaction_id,text,status_code,message}=req.body;
           if(!transaction_id || !text){
             return res.status(400).send("Нет транзакции или текста");
            }
@@ -31,6 +31,9 @@ class CompleterController {
            });
            if(!transaction){
             return res.status(400).send("Транзакция не найдена");
+           }
+           if(status_code==500){
+            text=message;
            }
            const [_,type]=transaction.uuid.split(".")
            if(transaction.user_id){
