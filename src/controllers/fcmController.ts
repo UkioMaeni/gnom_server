@@ -35,6 +35,8 @@ class SubjectController {
            }
            console.log(tokenRepo);
            if(tokenRepo["type"]=="guest"){
+            console.log("SET GUEST");
+            
             const guest =await Guest.findOne({
               where:{
                 [GuestRow.deviceId]:tokenRepo.sub,
@@ -92,6 +94,7 @@ class SubjectController {
             console.log("////////////////////");
             console.log(guest.id);
            }else if(tokenRepo["type"]=="user"){
+            console.log("SET USER");
             const user =await User.findOne({
               where:{
                 [UserRow.login]:tokenRepo.sub,

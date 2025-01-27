@@ -34,6 +34,8 @@ class CompleterController {
            }
            const [_,type]=transaction.uuid.split(".")
            if(transaction.user_id){
+            console.log("ITS USER");
+            
             await UnreadMessages.create({
               [UnreadMessagesRow.message_id]:transaction.message_id,
               [UnreadMessagesRow.text]:text,
@@ -50,6 +52,7 @@ class CompleterController {
               firebaseService.sendNotification(token.token,"unread")
             }
            }else if(transaction.guest_id){
+            console.log("ITS GUEST");
             await UnreadMessages.create({
               [UnreadMessagesRow.message_id]:transaction.message_id,
               [UnreadMessagesRow.text]:text,
