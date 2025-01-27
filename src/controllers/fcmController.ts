@@ -120,6 +120,10 @@ class SubjectController {
             //   }
             // });
             if(fcm){
+              console.log("PEREREG TOKEN");
+              
+              console.log(token);
+              
               FCM.update({
                 [FCMRow.user_id]:user.id,
               },{
