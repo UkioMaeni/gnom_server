@@ -104,17 +104,22 @@ class SubjectController {
               return res.status(401).send("неавтор");
               
              }
-             const fcm= await FCM.findOrCreate({
+             const fcm = await FCM.findOne({
               where:{
-                [FCMRow.token]:token,
-                [FCMRow.user_id]:user.id,
-              },
-              defaults:{
-                [FCMRow.token]:token,
                 [FCMRow.user_id]:user.id,
               }
-            });
-            if(fcm[1]){
+             });
+            //  const fcm= await FCM.findOrCreate({
+            //   where:{
+            //     [FCMRow.token]:token,
+            //     [FCMRow.user_id]:user.id,
+            //   },
+            //   defaults:{
+            //     [FCMRow.token]:token,
+            //     [FCMRow.user_id]:user.id,
+            //   }
+            // });
+            if(fcm){
               FCM.update({
                 [FCMRow.user_id]:user.id,
               },{
