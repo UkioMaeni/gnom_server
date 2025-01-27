@@ -124,11 +124,11 @@ class SubjectController {
               
               console.log(token);
               
-              FCM.update({
-                [FCMRow.user_id]:user.id,
+              await FCM.update({
+                [FCMRow.token]:token,
               },{
                 where:{
-                  [FCMRow.token]:token,
+                  [FCMRow.user_id]:user.id,
                 }
               }
             )
