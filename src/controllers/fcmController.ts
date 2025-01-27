@@ -128,7 +128,21 @@ class SubjectController {
                 }
               }
             )
+            }else{
+              await FCM.create({
+                  [FCMRow.token]:token,
+                  [FCMRow.user_id]:user.id,
+                  [FCMRow.guest_id]:null,
+              })
             }
+            const fcmqq = await FCM.findOne({
+              where:{
+                [FCMRow.user_id]:user.id,
+              }
+            })
+            console.log("NEW USER FCM");
+            
+            console.log(fcmqq);
            }
            
           
