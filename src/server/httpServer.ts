@@ -25,7 +25,6 @@ export const startHTTPServer=()=>{
     app.use("/api",completerRoutes);
     app.use("/api/support",suportRouter);
     app.use("/api",fcmRoutes);
-    app.use(cors())
     app.listen(port, async() => {
     const initDb:boolean= await inittializeDB.initializeModelDB()
     firebaseService.initialize()
