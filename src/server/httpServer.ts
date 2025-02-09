@@ -8,10 +8,12 @@ import fcmRoutes from "../routes/fcmRoutes";
 import inittializeDB from "../service/inittializeDB";
 import firebaseService from "../firebase/firebase"
 import { startBotProcess } from "../service/tgBot/tgBot";
+var cors = require('cors')
 const express = require('express');
 const path = require('path')
 const app = express();
 const port = 3625; 
+
 
 
 export const startHTTPServer=()=>{
@@ -23,6 +25,7 @@ export const startHTTPServer=()=>{
     app.use("/api",completerRoutes);
     app.use("/api/support",suportRouter);
     app.use("/api",fcmRoutes);
+    app.use(cors())
     app.listen(port, async() => {
     const initDb:boolean= await inittializeDB.initializeModelDB()
     firebaseService.initialize()
@@ -33,3 +36,5 @@ export const startHTTPServer=()=>{
     console.log(`Сервер запущен на http://localhost:${port}`);
     });
 }
+
+
