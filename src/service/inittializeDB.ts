@@ -12,13 +12,11 @@ import MailCode from "../models/mailCode"
 import SupportAccess from "../models/support_access"
 import FCM from "../models/fcm"
 import UnreadMessages from "../models/unreadMessages"
-import {startBotPooling} from "./tgBot/tgBot"
 class InitializeDBService{
     
     async initializeModelDB():Promise<boolean>{
         try {
           await db.authenticate();
-          startBotPooling();
           await this.initializeModels();
           return true;
         } catch (error) {
