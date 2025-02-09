@@ -14,9 +14,13 @@ const path = require('path')
 const app = express();
 const port = 3625; 
 
-
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 
 export const startHTTPServer=()=>{
+    app.use(cors(corsOptions))
     app.use(express.json());
     app.use("/api/user",userRouter);
     app.use("/api/guest",guestRouter);
@@ -25,6 +29,7 @@ export const startHTTPServer=()=>{
     app.use("/api",completerRoutes);
     app.use("/api/support",suportRouter);
     app.use("/api",fcmRoutes);
+
     app.listen(port, async() => {
     const initDb:boolean= await inittializeDB.initializeModelDB()
     firebaseService.initialize()
