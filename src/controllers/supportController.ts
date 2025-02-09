@@ -19,7 +19,7 @@ class Supportontroller {
           const {name,email,subject,problem} =req.body as {name:string,email:string,subject:string,problem:string}; 
           
           res.send("ok").status(200);
-          const text:string=name+" обратился с темой \n\""+subject+"\"и проблемой:\n"+problem+"\n\nemail для связи: "+email;
+          const text:string=name+" обратился с темой \n\""+subject+"\"\nи проблемой:\n"+problem+"\n\nemail для связи: "+email;
           sendBotSupport(text);
           return;
         } catch (error) { 
