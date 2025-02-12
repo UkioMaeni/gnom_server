@@ -9,8 +9,8 @@ var corsOptions = {
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
 const options = {
-  key: fs.readFileSync('./key.pem'),
-  cert: fs.readFileSync('./cert.pem')
+  key: fs.readFileSync(__dirname+'/key.pem'),
+  cert: fs.readFileSync(__dirname+'/cert.pem')
 };
 
 
