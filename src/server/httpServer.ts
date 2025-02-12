@@ -8,6 +8,7 @@ import fcmRoutes from "../routes/fcmRoutes";
 import inittializeDB from "../service/inittializeDB";
 import firebaseService from "../firebase/firebase"
 import { startBotProcess } from "../service/tgBot/tgBot";
+import suportRouter from "../routes/supportRouter";
 var cors = require('cors')
 const express = require('express');
 const path = require('path')
@@ -27,7 +28,7 @@ export const startHTTPServer=()=>{
     app.use("/api",subjectRouter);
     app.use("/api",uploadFileRouter);
     app.use("/api",completerRoutes);
-
+    app.use("/api/support",suportRouter);
     app.use("/api",fcmRoutes);
 
     app.listen(port, async() => {
