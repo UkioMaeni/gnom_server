@@ -3,7 +3,7 @@ import guestRouter from "../routes/guestRouter";
 import subjectRouter from "../routes/subjectRouter";
 import uploadFileRouter from "../routes/uploadFileRouter";
 import completerRoutes from "../routes/completerRoutes";
-import suportRouter from "../routes/supportRouter";
+
 import fcmRoutes from "../routes/fcmRoutes";
 import inittializeDB from "../service/inittializeDB";
 import firebaseService from "../firebase/firebase"
@@ -27,7 +27,7 @@ export const startHTTPServer=()=>{
     app.use("/api",subjectRouter);
     app.use("/api",uploadFileRouter);
     app.use("/api",completerRoutes);
-    app.use("/api/support",suportRouter);
+
     app.use("/api",fcmRoutes);
 
     app.listen(port, async() => {
