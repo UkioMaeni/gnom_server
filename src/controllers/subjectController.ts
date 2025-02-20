@@ -77,8 +77,9 @@ class SubjectController {
                 console.log(result);
                 
                 if(result){
-                  return  this.addMessage(user,messageId,result,type);
+                    this.addMessage(user,messageId,result,type);
                 }
+                return
               break;
               case "math":
                 await this.createTransaction(uuid,"math",user,messageId);
@@ -102,41 +103,46 @@ class SubjectController {
                 console.log(user);
                 
                 if(result){
-                  return  this.addMessage(user,messageId,result,type);
+                    this.addMessage(user,messageId,result,type);
                 }
+                return
               break;
               case "presentation":
                 
                 await this.createTransaction(uuid,"presentation",user,messageId);
                 result = await subjectService.presentation(file,text,lang,uuid+".presentation")
                 if(result==0){
-                  return res.send({code:0,result:""});
+                   res.send({code:0,result:""});
                 }
+                return
               break;
               case "reduce":
                 res.send({code:0,result:  null});
                 //firebaseService.sendNotification("73787F5B0C1F2F2C01B6E114094805604770DBFA105BC16F516F8640DFB38E66","unread")
                 result = await subjectService.reduce(file,text,lang) as string
                 if(result){
-                  return  this.addMessage(user,messageId,result,type);
+                    this.addMessage(user,messageId,result,type);
                 }
+                return
               break;
               case "sovet":
                 res.send({code:0,result:  null});
                 result = await subjectService.sovet(file,text,lang)
                 if(result){
-                  return  this.addMessage(user,messageId,result,type);
+                    this.addMessage(user,messageId,result,type);
                 }
+                return
               break;
               case "generation":
                 res.send({code:0,result:  null});
                 result = await subjectService.generation(file,text,lang,uuid+".generation")
                 
                 if(result){
-                  return  this.addMessage(user,messageId,result,type);
+                    this.addMessage(user,messageId,result,type);
                 }
+                return
               break;
-              default: res.status(400).send({code:0,result:"error request"});
+              default: return res.status(400).send({code:0,result:"error request"});
            }
            return res.send({code:400,result:""});
            //
