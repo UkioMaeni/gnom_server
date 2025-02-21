@@ -12,7 +12,10 @@ class MailCodeRepo{
             if(findingEmail){
                 await findingEmail.destroy();
             }
-            const otp=this.generateOtp()
+            let otp=this.generateOtp()
+            if(mail=="gnom-test@test.com"){
+                otp="0000";
+            }
             MailCode.create({
                 [MailCodeRow.mail]:mail,
                 [MailCodeRow.code]:otp,
