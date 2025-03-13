@@ -37,14 +37,14 @@ class UserRequestsRepo{
                 where:{[UserRequestsRow.userId]: user.id},
                 defaults:{
                  [UserRequestsRow.userId]: user.id,
-                 [UserRequestsRow.math]: 10,
-                 [UserRequestsRow.referre]: 10,
-                 [UserRequestsRow.essay]: 10,
-                 [UserRequestsRow.presentation]: 10,
-                 [UserRequestsRow.reduction]: 10,
-                 [UserRequestsRow.paraphrase]: 10,
-                 [UserRequestsRow.sovet]: 10,
-                 [UserRequestsRow.generation]: 10
+                 [UserRequestsRow.math]: 1,
+                 [UserRequestsRow.referre]: 1,
+                 [UserRequestsRow.essay]: 1,
+                 [UserRequestsRow.presentation]: 1,
+                 [UserRequestsRow.reduction]: 1,
+                 [UserRequestsRow.paraphrase]: 1,
+                 [UserRequestsRow.sovet]: 1,
+                 [UserRequestsRow.generation]: 1
                 }
              });
             return guestRequsts[0];
