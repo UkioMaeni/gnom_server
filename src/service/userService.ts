@@ -124,8 +124,55 @@ class UserService{
     //         throw error;
     //     }
     // }
-    
-    
+    async isAvailable(login:string,requestType: string ):Promise<boolean>{
+      try {
+          const guestRequests=  await this.userRequestsRepo.requestsInfo(login);
+          if(requestType=="parafrase"){
+            return guestRequests.paraphrase > 0;
+          }
+          if(requestType=="math"){
+            return guestRequests.math > 0;
+          }
+          if(requestType=="referat"){
+            return guestRequests.referre > 0;
+          }
+          if(requestType=="essay"){
+            return guestRequests.essay > 0;
+          }
+          if(requestType=="presentation"){
+            return guestRequests.presentation > 0;
+          }
+          if(requestType=="reduce"){
+            return guestRequests.reduction > 0;
+          }
+          if(requestType=="sovet"){
+            return guestRequests.sovet > 0;
+          }
+          if(requestType=="generation"){
+            return guestRequests.generation > 0;
+          }
+          return false
+      } catch (error) {
+          console.log(error);
+          throw error;
+      }
+  }
+  async removeRequestForType(login:string,requestType: string ):Promise<boolean>{
+    try {
+        return await this.userRequestsRepo.removeRequestForType(login,requestType)
+    }catch(error){
+      console.log(error);
+            throw error;
+    }
+  }
+  async addRequestForType(login:string,requestType: string ):Promise<boolean>{
+    try {
+        return await this.userRequestsRepo.addRequestForType(login,requestType)
+    }catch(error){
+      console.log(error);
+            throw error;
+    }
+  }
 }
 
 export default new UserService();

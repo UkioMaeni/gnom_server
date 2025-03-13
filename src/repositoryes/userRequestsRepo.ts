@@ -3,10 +3,10 @@ import UserRequests,{UserRequestsRow} from "../models/userRequests";
 import { EGuestControllerErrorType, GuestControllerError } from "../service/customError/customError";
 
 class UserRequestsRepo{
-    // async updateRequests(userId:number,):Promise<GuestRequests>{
+    // async updateRequests(userId:number,):Promise<UserRequests>{
     //     try {
-    //         const guestRequsts= await GuestRequests.findOrCreate({
-    //            where:{[GuestRequestsRow.guestId]: guestId},
+    //         const guestRequsts= await UserRequests.findOrCreate({
+    //            where:{[UserRequestsRow.guestId]: guestId},
     //            defaults:{
     //             [UserRequestsRow.userId]: userId,
     //             [UserRequestsRow.math]: 40,
@@ -53,6 +53,216 @@ class UserRequestsRepo{
              throw new GuestControllerError("noCreate",EGuestControllerErrorType.noCreate,403)
         }
     }
+    async removeRequestForType(login:string,requestType: string ):Promise<boolean>{
+        try {
+            const requests=await this.requestsInfo(login);
+            if(requestType=="parafrase"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.paraphrase]:requests.paraphrase-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="math"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.math]:requests.math-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="referat"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.referre]:requests.referre-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="essay"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.essay]:requests.essay-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="presentation"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.presentation]:requests.presentation-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="reduce"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.reduction]:requests.reduction-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="sovet"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.sovet]:requests.sovet-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="generation"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.generation]:requests.generation-1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+            return true;
+          } catch (error) {
+              console.log(error);
+              throw error;
+          }
+      }
+      async addRequestForType(deviceId:string,requestType: string ):Promise<boolean>{
+        try {
+            const requests=await this.requestsInfo(deviceId);
+            if(requestType=="parafrase"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.paraphrase]:requests.paraphrase+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="math"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.math]:requests.math+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="referat"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.referre]:requests.referre+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="essay"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.essay]:requests.essay+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="presentation"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.presentation]:requests.presentation+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="reduce"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.reduction]:requests.reduction+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="sovet"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.sovet]:requests.sovet+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+              if(requestType=="generation"){
+                await UserRequests.update(
+                    {
+                        [UserRequestsRow.generation]:requests.generation+1
+                    },
+                    {
+                        where:{
+                            [UserRequestsRow.userId]:requests.userId
+                        }
+                    }
+                );
+              }
+            return true;
+          } catch (error) {
+              console.log(error);
+              throw error;
+          }
+      }
     
 }
 

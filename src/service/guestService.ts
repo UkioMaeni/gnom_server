@@ -58,7 +58,55 @@ class GuestService{
           throw error;
       }
   }
-    
+  async isAvailable(deviceId:string,requestType: string ):Promise<boolean>{
+      try {
+          const guestRequests=  await this.guestRequestsRepo.requestsInfo(deviceId);
+          if(requestType=="parafrase"){
+            return guestRequests.paraphrase > 0;
+          }
+          if(requestType=="math"){
+            return guestRequests.math > 0;
+          }
+          if(requestType=="referat"){
+            return guestRequests.referre > 0;
+          }
+          if(requestType=="essay"){
+            return guestRequests.essay > 0;
+          }
+          if(requestType=="presentation"){
+            return guestRequests.presentation > 0;
+          }
+          if(requestType=="reduce"){
+            return guestRequests.reduction > 0;
+          }
+          if(requestType=="sovet"){
+            return guestRequests.sovet > 0;
+          }
+          if(requestType=="generation"){
+            return guestRequests.generation > 0;
+          }
+          return false
+      } catch (error) {
+          console.log(error);
+          throw error;
+      }
+  }
+  async removeRequestForType(deviceId:string,requestType: string ):Promise<boolean>{
+    try {
+        return await this.guestRequestsRepo.removeRequestForType(deviceId,requestType)
+    }catch(error){
+      console.log(error);
+            throw error;
+    }
+  }
+  async addRequestForType(deviceId:string,requestType: string ):Promise<boolean>{
+    try {
+        return await this.guestRequestsRepo.addRequestForType(deviceId,requestType)
+    }catch(error){
+      console.log(error);
+            throw error;
+    }
+  }
     
 }
 

@@ -15,6 +15,8 @@ import jwt from '../service/JWT/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import UnreadMessages, { UnreadMessagesRow } from '../models/unreadMessages';
 import FCM, { FCMRow } from '../models/fcm';
+import guestService from '../service/guestService';
+import userService from '../service/userService';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class SubjectController {
@@ -53,12 +55,30 @@ class SubjectController {
                   [UserRow.login]:tokenRepo.sub,
                 }
               })
+              if(!user){
+                return res.status(401).send("неавтор");
+              }
+              const isAvailable : boolean=await userService.isAvailable((user as User).login,type);
+              console.log("запрос разрешен пользователю: "+isAvailable);
+              if(!isAvailable){
+                return res.status(400).send({typeError:"isNotAvailable"});
+              }
+              await userService.removeRequestForType((user as User).login,type);
            }else if(tokenRepo["type"]=="guest"){
             user =await Guest.findOne({
               where:{
                 [GuestRow.deviceId]:tokenRepo.sub,
               }
             })
+            if(!user){
+              return res.status(401).send("неавтор");
+            }
+            const isAvailable : boolean=await guestService.isAvailable((user as Guest).deviceId,type);
+            console.log("запрос разрешен гостю: "+isAvailable);
+            if(!isAvailable){
+              return res.status(400).send({typeError:"isNotAvailable"});
+            }
+            await guestService.removeRequestForType((user as Guest).deviceId,type);
            }else{
             return res.status(401).send("неавтор");
            }
@@ -72,6 +92,7 @@ class SubjectController {
            const uuid= randomUUID();
            switch(type){
               case "parafrase":
+                
                 res.send({code:0,result:  null});
                 result=await  subjectService.paraphrasingText(file,text,lang)
                 console.log(result);
