@@ -123,7 +123,7 @@ class PayNotifyController {
           const userId=(user as User).id; 
           const orderId=randomUUID();
           //генерация временного токена токена
-          const initString:string=amount+description+orderId+terminalPass+terminalKey;
+          const initString:string=amount*100+description+orderId+terminalPass+terminalKey;
           const encodedString = sha256(initString);  
           const token =encodedString;
           const response = await fetch(
