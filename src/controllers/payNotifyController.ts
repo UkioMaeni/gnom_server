@@ -131,7 +131,7 @@ class PayNotifyController {
             {
               method:"POST",
               headers:{
-                "Content Type":"application/json"
+                "Content-Type":"application/json"
               },
               body:JSON.stringify(
                 {
