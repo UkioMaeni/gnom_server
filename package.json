@@ -16,6 +16,7 @@
     "@types/nodemailer": "^6.4.15",
     "@types/request": "^2.48.12",
     "@types/sequelize": "^4.28.20",
+    "@types/sha256": "^0.2.2",
     "nodemon": "^3.1.0",
     "typescript": "^5.4.4"
   },
@@ -40,6 +41,7 @@
     "pg-hstore": "^2.3.4",
     "request": "^2.88.2",
     "sequelize": "^6.37.2",
+    "sha256": "^0.2.0",
     "ts-node": "^10.9.2"
   }
 }

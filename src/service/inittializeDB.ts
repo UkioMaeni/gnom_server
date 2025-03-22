@@ -12,6 +12,7 @@ import MailCode from "../models/mailCode"
 import SupportAccess from "../models/support_access"
 import FCM from "../models/fcm"
 import UnreadMessages from "../models/unreadMessages"
+import PaymentTransactions from "../models/paymentTransactions"
 class InitializeDBService{
     
     async initializeModelDB():Promise<boolean>{
@@ -39,6 +40,7 @@ class InitializeDBService{
         await  MailCode.sync({ alter: true });
         await  FCM.sync({ alter: true });
         await UnreadMessages.sync({ alter: true });
+        await PaymentTransactions.sync({ alter: true });
     }
 }
 
