@@ -28,6 +28,7 @@ class InitializeDBService{
     }
 
     private async initializeModels(){
+        await PaymentTransactions.sync({ alter: true });
         await SupportAccess.sync({alter:true})
         await  User.sync({ alter: true });
         await  Guest.sync({ alter: true });
@@ -40,7 +41,7 @@ class InitializeDBService{
         await  MailCode.sync({ alter: true });
         await  FCM.sync({ alter: true });
         await UnreadMessages.sync({ alter: true });
-        await PaymentTransactions.sync({ alter: true });
+        
     }
 }
 
