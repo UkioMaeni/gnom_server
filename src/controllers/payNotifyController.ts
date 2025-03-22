@@ -123,6 +123,16 @@ class PayNotifyController {
           const userId=(user as User).id; 
           const orderId=randomUUID();
           //генерация временного токена токена
+          console.log("amount");
+          console.log(amount*100);
+          console.log("description");
+          console.log(description);
+          console.log("orderId");
+          console.log(orderId);
+          console.log("terminalPass");
+          console.log(terminalPass);
+          console.log("terminalKey");
+          console.log(terminalKey);
           const initString:string=amount*100+description+orderId+terminalPass+terminalKey;
           console.log("initString");
           console.log(initString);
