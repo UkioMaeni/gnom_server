@@ -37,7 +37,7 @@ PaymentTransactions.init(
             
         },
         terminalPaymentId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             
         },
