@@ -7,6 +7,7 @@ import User, { UserRow } from '../models/user';
 import Guest from '../models/guest';
 import { randomUUID } from 'crypto';
 import sha256 from 'crypto-js/sha256';
+import Base64 from 'crypto-js/enc-base64';
 import PaymentTransactions, { PaymentTransactionsRow } from '../models/paymentTransactions';
 type ControllerFunction = (req: Request, res: Response) => void;
 
@@ -137,7 +138,7 @@ class PayNotifyController {
           console.log("initString");
           console.log(initString);
           
-          const encodedString = sha256(initString); 
+          const encodedString = Base64.stringify(sha256(initString)); 
           console.log("encodedString");
           console.log(encodedString); 
           const token =encodedString;
