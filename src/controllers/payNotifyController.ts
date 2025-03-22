@@ -124,7 +124,12 @@ class PayNotifyController {
           const orderId=randomUUID();
           //генерация временного токена токена
           const initString:string=amount*100+description+orderId+terminalPass+terminalKey;
-          const encodedString = sha256(initString);  
+          console.log("initString");
+          console.log(initString);
+          
+          const encodedString = sha256(initString); 
+          console.log("encodedString");
+          console.log(encodedString); 
           const token =encodedString;
           const response = await fetch(
             tinkInitUrl,
