@@ -32,12 +32,12 @@ PaymentTransactions.init(
             allowNull: true,
         },
         userId: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             
         },
         terminalPaymentId: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             
         },
