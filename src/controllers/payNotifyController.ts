@@ -6,7 +6,7 @@ import jwt from '../service/JWT/jwt';
 import User, { UserRow } from '../models/user';
 import Guest from '../models/guest';
 import { randomUUID } from 'crypto';
-import sha256 from 'sha256';
+import sha256 from 'crypto-js/sha256';
 import PaymentTransactions, { PaymentTransactionsRow } from '../models/paymentTransactions';
 type ControllerFunction = (req: Request, res: Response) => void;
 
