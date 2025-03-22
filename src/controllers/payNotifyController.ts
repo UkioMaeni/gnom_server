@@ -136,7 +136,7 @@ class PayNotifyController {
               body:JSON.stringify(
                 {
                   "TerminalKey":terminalKey,
-                  "Amount": amount,
+                  "Amount": amount*100,
                   "OrderId": orderId,
                   "Description": description,
                   "Token": token,
@@ -146,9 +146,9 @@ class PayNotifyController {
                       "Items": [
                       {
                           "Name":description,
-                          "Price":amount,
+                          "Price":amount*100,
                           "Quantity":1.00,
-                          "Amount":amount,
+                          "Amount":amount*100,
                           "Tax":"vat10"
                       }
                       ]
