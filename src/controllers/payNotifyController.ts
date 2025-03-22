@@ -160,6 +160,8 @@ class PayNotifyController {
           let paymentUrl:string="";
           if(response.ok){
             const data=await response.json();
+            console.log(data);
+            
             if(data["Success"]==true){
               paymentUrl=data["PaymentURL"];
               await PaymentTransactions.create({
