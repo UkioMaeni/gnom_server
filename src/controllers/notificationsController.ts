@@ -36,7 +36,7 @@ class NotificationsController {
           } catch (error) {
             return  res.status(401).send("no auth");
           }
-          let user:User|Guest|null;
+          let user:User|null;
            if(tokenRepo["type"]=="user"){
               user =await User.findOne({
                 where:{
@@ -47,11 +47,14 @@ class NotificationsController {
                 return res.status(401).send("неавтор");
               }
            }else{
-            return  res.status(401).send("no auth");
+            return  res.status(400).send("no auth");
            }
+           console.log("user id");
+           console.log(user.id);
+           
           const notify = await UserNotify.findAll({
             where:{
-              [UserNotifyRow.userId]:(user as User).id,
+              [UserNotifyRow.userId]:user.id,
               [UserNotifyRow.status]:"NEW",
             }
           })
