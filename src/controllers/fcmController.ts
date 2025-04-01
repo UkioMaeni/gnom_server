@@ -13,7 +13,7 @@ import Guest, { GuestRow } from '../models/guest';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 class SubjectController {
-
+ 
 
   setToken:ControllerFunction=async(req, res) => {
         try {
