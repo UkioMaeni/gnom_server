@@ -165,9 +165,17 @@ class UserService{
             throw error;
     }
   }
-  async addRequestForType(login:string,requestType: string ):Promise<boolean>{
+  async addRequestForType(login:string,requestType: string,count:number=1 ):Promise<boolean>{
     try {
-        return await this.userRequestsRepo.addRequestForType(login,requestType)
+        return await this.userRequestsRepo.addRequestForType(login,requestType,count)
+    }catch(error){
+      console.log(error);
+            throw error;
+    }
+  }
+  async addRequestAllType(login:string,count:number=1 ):Promise<boolean>{
+    try {
+        return await this.userRequestsRepo.addRequestAllType(login,count)
     }catch(error){
       console.log(error);
             throw error;

@@ -9,6 +9,9 @@ import { randomUUID } from 'crypto';
 import Base64 from 'crypto-js/enc-base64';
 import crypto from 'crypto';
 import PaymentTransactions, { PaymentTransactionsRow } from '../models/paymentTransactions';
+import userService from '../service/userService';
+import firebase from '../firebase/firebase';
+import FCM, { FCMRow } from '../models/fcm';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 
@@ -18,56 +21,68 @@ function sha256(message:string) {
   return hash.digest('hex');
 }
 
-const paymentInfoByLocale={
+export const paymentInfoByLocale={
   "ru":[
     {
       id: "ru_2025_bronze",
       price:10,
-      description:"Подписка BRONZE на сервис Gnom Helper"
+      description:"Подписка BRONZE на сервис Gnom Helper",
+      requestCount:10,
+      name:"BRONZE"
     },
     {
       id: "ru_2025_gold",
       price:30,
-      description:"Подписка GOLD на сервис Gnom Helper"
+      description:"Подписка GOLD на сервис Gnom Helper",
+      requestCount:30,
+      name:"GOLD"
     },
     {
       id: "ru_2025_silver",
       price:20,
-      description:"Подписка SILVER на сервис Gnom Helper"
+      description:"Подписка SILVER на сервис Gnom Helper",
+      requestCount:20,
+      name:"SILVER"
     }
   ],
   "en":[
     {
       id: "ru_2025_bronze",
       price:10,
-      description:"Подписка BRONZE на сервис Gnom Helper"
+      description:"Подписка BRONZE на сервис Gnom Helper",
+      requestCount:10
     },
     {
       id: "ru_2025_gold",
       price:30,
-      description:"Подписка GOLD на сервис Gnom Helper"
+      description:"Подписка GOLD на сервис Gnom Helper",
+      requestCount:30
     },
     {
       id: "ru_2025_silver",
       price:20,
-      description:"Подписка SILVER на сервис Gnom Helper"
+      description:"Подписка SILVER на сервис Gnom Helper",
+      requestCount:20
     }
   ],
   "ar":[
     {
       id: "ru_2025_bronze",
       price:10,
-      description:"Подписка BRONZE на сервис Gnom Helper"
+      description:"Подписка BRONZE на сервис Gnom Helper",
+      requestCount:10
     },
     {
       id: "ru_2025_gold",
       price:30,
-      description:"Подписка GOLD на сервис Gnom Helper"
+      description:"Подписка GOLD на сервис Gnom Helper",
+      requestCount:30
     },
     {
       id: "ru_2025_silver",
       price:20,
-      description:"Подписка SILVER на сервис Gnom Helper"
+      description:"Подписка SILVER на сервис Gnom Helper",
+      requestCount:20
     }
   ],
 }
@@ -188,9 +203,10 @@ class PayNotifyController {
               paymentUrl=data["PaymentURL"];
               await PaymentTransactions.create({
                 [PaymentTransactionsRow.orderId]:orderId,
-                [PaymentTransactionsRow.status]:"init",
+                [PaymentTransactionsRow.status]:"AUTHORIZED",
                 [PaymentTransactionsRow.userId]:userId,
                 [PaymentTransactionsRow.terminalPaymentId]:data["PaymentId"],
+                [PaymentTransactionsRow.localPaymentId]:paymentId
               });
             }
           }
@@ -212,8 +228,82 @@ class PayNotifyController {
         try {
           console.log(req.body);
           console.log(req.body);
+          const {Status,OrderId,PaymentId} = req.body as {Status:string,OrderId:string,PaymentId:string};
           sendBotSupport(JSON.stringify(req.body));
-          return res.status(200).send("OK");
+          if(!Status||!OrderId||!PaymentId){
+            return res.status(500).send("");
+          }
+          if(Status=="CONFIRMED"){
+            const paymentInfo= await PaymentTransactions.findOne({
+              where:{
+                [PaymentTransactionsRow.orderId]:OrderId,
+                [PaymentTransactionsRow.terminalPaymentId]:PaymentId,
+              }
+            });
+            if(!paymentInfo){
+              
+             
+              sendBotSupport(JSON.stringify(req.body)+"\n требуется вмешательство. не найдена запись о транзакции");
+              return res.status(500).send("");
+            }else{
+              const user= await User.findOne({
+                where:{
+                  [UserRow.id]:paymentInfo.userId
+                }
+              })
+              if(!user){
+                
+                sendBotSupport(JSON.stringify(req.body)+"\n требуется вмешательство. не найден пользователь");
+                return res.status(500).send("");
+              }else{
+                let requestCount=-1;
+                let name="";
+                for(var element of paymentInfoByLocale.ru){
+                  if(element.id==paymentInfo.localPaymentId){
+                    requestCount=element.requestCount;
+                    name=element.name;
+                    break;
+                  }
+                }
+                if(requestCount==-1){
+                  sendBotSupport(JSON.stringify(req.body)+"\n требуется вмешательство. не найден локальный идентификатор")
+                  return res.status(500).send("");
+                }else{
+                  res.status(200).send("OK");
+                  await PaymentTransactions.update(
+                    {
+                      [PaymentTransactionsRow.status]:"CONFIRMED",
+                    },{
+                      where:{
+                        [PaymentTransactionsRow.orderId]:OrderId,
+                        [PaymentTransactionsRow.terminalPaymentId]:PaymentId,
+                      }
+                    }
+                  );
+                  await userService.addRequestAllType(user.login,requestCount);
+                  const fcm = await FCM.findOne({
+                    where:{
+                      [FCMRow.user_id]:user.id
+                    }
+                  })
+                  if(fcm!=null){
+                    firebase.sendNotification(fcm.token,"payment")
+                  }else{
+                    console.log("Не найден fcm токен юзера");
+                    
+                  }
+                  
+                }
+                
+              }
+              
+              
+              
+            }
+          }else{
+            return res.status(200).send("OK");
+          }
+          
         } catch (error) {
           console.log(error);
           

@@ -7,7 +7,8 @@ export enum PaymentTransactionsRow{
     orderId="orderId",
     status="status",
     userId="userId",
-    terminalPaymentId="terminalPaymentId"
+    terminalPaymentId="terminalPaymentId",
+    localPaymentId="localPaymentId"
 }
 class PaymentTransactions extends Model{
     declare id:number;
@@ -15,6 +16,7 @@ class PaymentTransactions extends Model{
     declare status:string;
     declare userId:number;
     declare terminalPaymentId:string;
+    declare localPaymentId:string;
 }
 PaymentTransactions.init(
     {   
@@ -37,6 +39,11 @@ PaymentTransactions.init(
             
         },
         terminalPaymentId: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            
+        },
+        localPaymentId: {
             type: DataTypes.STRING,
             allowNull: false,
             

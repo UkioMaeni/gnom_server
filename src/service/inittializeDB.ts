@@ -6,6 +6,7 @@ import Requests from "../models/userRequests";
 //import UseRequests from "../models/userRequests"
 import GuestRequests from "../models/guest_requests"
 import UserTokens from "../models/user_tokens"
+import UserNotify from "../models/user_notify"
 import GuestTokens from "../models/guest_tokens"
 import Transaction from "../models/transaction"
 import MailCode from "../models/mailCode"
@@ -29,6 +30,7 @@ class InitializeDBService{
 
     private async initializeModels(){
         try {
+            await UserNotify.sync({ alter: true });
             await PaymentTransactions.sync({ alter: true });
             await SupportAccess.sync({alter:true})
             await  User.sync({ alter: true });

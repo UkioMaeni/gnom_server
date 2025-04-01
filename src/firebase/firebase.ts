@@ -12,7 +12,7 @@ class FireBaseService{
         console.log(app.auth().app.options.credential);
         //this.sendNotification("fXq7GqtFcU_FhwXyu13mfZ:APA91bHmd34KRXDgnasY_niaHZxEuKtIOAvFu2c36PsV4XF8tzb7taWC8EAbMyS-FHULGCR7NckYqOXLz8IR2pxXt47v-Fw9P1_lE6Vsnukys0wrQl7-x3g","unread");
     }
-    async sendNotification(fcm:string,messageType:string):Promise<void>{
+    async sendNotification(fcm:string,messageType:string,name:string="no_name"):Promise<void>{
       console.log(fcm);
       
         try {
@@ -23,7 +23,8 @@ class FireBaseService{
               body: 'Check message or push in app'
             },
             data: {
-              messageType
+              messageType,
+              name
             }
           };
           await app!.messaging().send(message)

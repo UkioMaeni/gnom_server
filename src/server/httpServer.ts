@@ -10,6 +10,7 @@ import firebaseService from "../firebase/firebase"
 import { startBotProcess } from "../service/tgBot/tgBot";
 import suportRouter from "../routes/supportRouter";
 import payNotifyRouter from "../routes/payNotifyRouter";
+import notificationsRouter from "../routes/notificationsRouter";
 var cors = require('cors')
 const express = require('express');
 const path = require('path')
@@ -32,7 +33,8 @@ export const startHTTPServer=()=>{
     app.use("/api/support",suportRouter);
     app.use("/api",fcmRoutes);
     app.use("/api",payNotifyRouter);
-    
+    app.use("/notify",payNotifyRouter);
+    app.use("/api/notifications",notificationsRouter);
     app.listen(port, async() => {
     const initDb:boolean= await inittializeDB.initializeModelDB()
     firebaseService.initialize()

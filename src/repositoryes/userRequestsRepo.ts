@@ -158,13 +158,13 @@ class UserRequestsRepo{
               throw error;
           }
       }
-      async addRequestForType(deviceId:string,requestType: string ):Promise<boolean>{
+      async addRequestForType(deviceId:string,requestType: string,count:number=1 ):Promise<boolean>{
         try {
             const requests=await this.requestsInfo(deviceId);
             if(requestType=="parafrase"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.paraphrase]:requests.paraphrase+1
+                        [UserRequestsRow.paraphrase]:requests.paraphrase+count
                     },
                     {
                         where:{
@@ -176,7 +176,7 @@ class UserRequestsRepo{
               if(requestType=="math"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.math]:requests.math+1
+                        [UserRequestsRow.math]:requests.math+count
                     },
                     {
                         where:{
@@ -188,7 +188,7 @@ class UserRequestsRepo{
               if(requestType=="referat"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.referre]:requests.referre+1
+                        [UserRequestsRow.referre]:requests.referre+count
                     },
                     {
                         where:{
@@ -200,7 +200,7 @@ class UserRequestsRepo{
               if(requestType=="essay"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.essay]:requests.essay+1
+                        [UserRequestsRow.essay]:requests.essay+count
                     },
                     {
                         where:{
@@ -212,7 +212,7 @@ class UserRequestsRepo{
               if(requestType=="presentation"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.presentation]:requests.presentation+1
+                        [UserRequestsRow.presentation]:requests.presentation+count
                     },
                     {
                         where:{
@@ -224,7 +224,7 @@ class UserRequestsRepo{
               if(requestType=="reduce"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.reduction]:requests.reduction+1
+                        [UserRequestsRow.reduction]:requests.reduction+count
                     },
                     {
                         where:{
@@ -236,7 +236,7 @@ class UserRequestsRepo{
               if(requestType=="sovet"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.sovet]:requests.sovet+1
+                        [UserRequestsRow.sovet]:requests.sovet+count
                     },
                     {
                         where:{
@@ -248,7 +248,7 @@ class UserRequestsRepo{
               if(requestType=="generation"){
                 await UserRequests.update(
                     {
-                        [UserRequestsRow.generation]:requests.generation+1
+                        [UserRequestsRow.generation]:requests.generation+count
                     },
                     {
                         where:{
@@ -257,6 +257,33 @@ class UserRequestsRepo{
                     }
                 );
               }
+            return true;
+          } catch (error) {
+              console.log(error);
+              throw error;
+          }
+      }
+      async addRequestAllType(login:string,count:number=1 ):Promise<boolean>{
+        try {
+            const requests=await this.requestsInfo(login);
+            await UserRequests.update(
+                {
+                    [UserRequestsRow.paraphrase]:requests.paraphrase+count,
+                    [UserRequestsRow.math]:requests.math+count,
+                    [UserRequestsRow.referre]:requests.referre+count,
+                    [UserRequestsRow.essay]:requests.essay+count,
+                    [UserRequestsRow.presentation]:requests.presentation+count,
+                    [UserRequestsRow.reduction]:requests.reduction+count,
+                    [UserRequestsRow.sovet]:requests.sovet+count,
+                    [UserRequestsRow.generation]:requests.generation+count,
+                },
+                {
+                    where:{
+                        [UserRequestsRow.userId]:requests.userId
+                    }
+                }
+            );
+            
             return true;
           } catch (error) {
               console.log(error);
