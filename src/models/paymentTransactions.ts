@@ -15,7 +15,7 @@ class PaymentTransactions extends Model{
     declare orderId:string;
     declare status:string;
     declare userId:number;
-    declare terminalPaymentId:string;
+    declare terminalPaymentId:number;
     declare localPaymentId:string;
 }
 PaymentTransactions.init(
@@ -39,7 +39,7 @@ PaymentTransactions.init(
             
         },
         terminalPaymentId: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
             
         },
