@@ -229,11 +229,12 @@ class PayNotifyController {
         try {
           console.log(req.body);
           console.log(req.body);
-          const {Status,OrderId,PaymentId} = req.body as {Status:string,OrderId:string,PaymentId:string};
+          let {Status,OrderId,PaymentId} = req.body as {Status:string,OrderId:string,PaymentId:string};
           sendBotSupport(JSON.stringify(req.body));
           if(!Status||!OrderId||!PaymentId){
             return res.status(500).send("");
           }
+          PaymentId=PaymentId.toString();
           if(Status=="CONFIRMED"){
             const paymentInfo= await PaymentTransactions.findOne({
               where:{
