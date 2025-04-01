@@ -51,7 +51,8 @@ class NotificationsController {
            }
           const notify = await UserNotify.findAll({
             where:{
-              [UserNotifyRow.userId]:(user as User).id
+              [UserNotifyRow.userId]:(user as User).id,
+              [UserNotifyRow.status]:"NEW",
             }
           })
            

@@ -12,6 +12,7 @@ import PaymentTransactions, { PaymentTransactionsRow } from '../models/paymentTr
 import userService from '../service/userService';
 import firebase from '../firebase/firebase';
 import FCM, { FCMRow } from '../models/fcm';
+import UserNotify, { UserNotifyRow } from '../models/user_notify';
 type ControllerFunction = (req: Request, res: Response) => void;
 
 
@@ -281,6 +282,12 @@ class PayNotifyController {
                     }
                   );
                   await userService.addRequestAllType(user.login,requestCount);
+                  await UserNotify.create({
+                    [UserNotifyRow.userId]:user.id,
+                    [UserNotifyRow.notifyType]:"payment_succes",
+                    [UserNotifyRow.notifyInfo]:name,
+                    [UserNotifyRow.status]:"NEW",
+                  })
                   const fcm = await FCM.findOne({
                     where:{
                       [FCMRow.user_id]:user.id
