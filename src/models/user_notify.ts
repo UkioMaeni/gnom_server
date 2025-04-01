@@ -26,7 +26,7 @@ UserNotify.init(
             primaryKey: true,
         },
         userId: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         notifyType: {
