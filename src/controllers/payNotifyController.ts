@@ -144,7 +144,8 @@ class PayNotifyController {
             return res.status(403).send("notPaymentId");
           }
           const userId=(user as User).id; 
-          const orderId=randomUUID();
+          let orderId=randomUUID();
+          orderId=orderId+"_"+user.id.toString()
           //генерация временного токена токена
           console.log("amount");
           console.log(amount*100);
