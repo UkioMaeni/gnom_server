@@ -59,9 +59,8 @@ class NotificationsController {
             }
           })
            
-          res.status(200).send(notify);
-          notify.forEach((element)=>{
-             UserNotify.update(
+          for(let element of notify){
+            await UserNotify.update(
               {
                 [UserNotifyRow.status]:"READ"
               },{
@@ -70,7 +69,8 @@ class NotificationsController {
                 }
               }
             )
-          })
+          }
+          res.status(200).send(notify);
           
         } catch (error) { 
           console.log(error);
